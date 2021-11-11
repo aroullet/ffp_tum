@@ -1,7 +1,3 @@
-//
-// Created by fujitsu on 11.11.21.
-//
-
 #ifndef FFP_TUM_HEALTHSTATE_HPP
 #define FFP_TUM_HEALTHSTATE_HPP
 

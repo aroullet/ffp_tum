@@ -3,7 +3,12 @@
 
 
 class Virus {
+private:
+    float spreadProb;
+    float radius;
 
+public:
+    Virus(float p, float r) : spreadProb(p), radius(r) {};
 };
 
 
