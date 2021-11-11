@@ -16,13 +16,17 @@ public:
 
     void resize(unsigned int x, unsigned int y);
 
-    std::pair<unsigned int, unsigned int> &getSize() const;
+    const unsigned int &getWidth() const;
 
-    unsigned int &getLength() const;
+    const unsigned int &getHeight() const;
 
-    unsigned int &getWidth() const;
+    const std::pair<unsigned int, unsigned int> &getSize() const;
 
     void setSize(const std::pair<unsigned int, unsigned int> &size);
+
+    void setHeight(unsigned int &length);
+
+    void setWidth(unsigned int &width);
 };
 
 

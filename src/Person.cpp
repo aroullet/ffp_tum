@@ -1,12 +1,25 @@
 #include "Person.hpp"
 
-Person::Person(Box* Box) {
-    this.Box = Box;
-    setPosition() temp = 1.0 * rand()*(numVertices)/RAND_MAX;//nachbar grad
+Person::Person(Box* box) {
+    this->box = box;
+    double xCoord= (1.0 * rand()*box->getWidth())/RAND_MAX;
+    double yCoord= (1.0 * rand()*box->getHeight())/RAND_MAX;
+    this->setPosition(xCoord, yCoord);
+    xCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
+    yCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
+    double length = sqrt(xCoord*xCoord + yCoord * yCoord);
+    this->setDirection(xCoord/length, yCoord/length);
 };
 
-void Person::updatePosition() {
+void Person::updatePosition(std::pair<double, double> pos) {
+    this->position = pos;
+}
 
+double Person::calcDistance(Person other){
+    auto otherPos = other.getPosition();
+    double x = otherPos.first - position.first;
+    double y = otherPos.second - position.second;
+    return sqrt(x*x + y*y);
 }
 
 HealthState Person::getHealthState() const {
@@ -17,20 +30,20 @@ void Person::setHealthState(HealthState healthState) {
     Person::healthState = healthState;
 }
 
-const std::pair<float, float> &Person::getPosition() const {
+const std::pair<double, double> &Person::getPosition() const {
     return position;
 }
 
-void Person::setPosition(const std::pair<float, float> &position) {
-    Person::position = position;
+void Person::setPosition(double x, double y) {
+    Person::position = std::pair<double, double>(x, y);
 }
 
-const std::pair<float, float> &Person::getDirection() const {
+const std::pair<double, double> &Person::getDirection() const {
     return direction;
 }
 
-void Person::setDirection(const std::pair<float, float> &direction) {
-    Person::direction = direction;
+void Person::setDirection(double x, double y) {
+    Person::direction = std::pair<double, double>(x, y);
 }
 
 Box *Person::getBox() const {

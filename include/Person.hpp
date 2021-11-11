@@ -1,31 +1,36 @@
 #ifndef FFP_TUM_PERSON_H
 #define FFP_TUM_PERSON_H
 #include "HealthState.hpp"
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
 #include <Box.hpp>
 
 
 class Person {
 private:
     HealthState healthState = HealthState::SUSCEPTIBLE;
-    std::pair<float, float> position;
-    std::pair<float, float> direction;
+    std::pair<double, double> position;
+    std::pair<double, double> direction;
     Box* box;
 public:
     Person(Box* box);
 
-    void updatePosition();
+    void updatePosition(std::pair<double, double> pos);
+
+    double calcDistance(Person other);
 
     HealthState getHealthState() const;
 
     void setHealthState(HealthState healthState);
 
-    const std::pair<float, float> &getPosition() const;
+    const std::pair<double, double> &getPosition() const;
 
-    void setPosition(const std::pair<float, float> &position);
+    void setPosition(double x, double y);
 
-    const std::pair<float, float> &getDirection() const;
+    const std::pair<double, double> &getDirection() const;
 
-    void setDirection(const std::pair<float, float> &direction);
+    void setDirection(double x, double y);
 
     Box *getBox() const;
 
