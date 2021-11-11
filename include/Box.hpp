@@ -7,7 +7,22 @@
 
 
 class Box {
+private:
+    std::pair<unsigned int, unsigned int> size;
+public:
+    Box(unsigned int x);
 
+    Box(unsigned int x, unsigned int y);
+
+    void resize(unsigned int x, unsigned int y);
+
+    std::pair<unsigned int, unsigned int> &getSize() const;
+
+    unsigned int &getLength() const;
+
+    unsigned int &getWidth() const;
+
+    void setSize(const std::pair<unsigned int, unsigned int> &size);
 };
 
 
