@@ -64,3 +64,5 @@ In this sprint, the code performance will be evaluated and improved. Potential p
 - The same file presents at least one different optimization techniques you applied, with the observable performance effects
 - Some form of visualization
 
+SDL Tutorial:
+https://www.geeksforgeeks.org/sdl-library-in-c-c-with-examples/
