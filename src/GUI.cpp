@@ -1,23 +1,24 @@
 #include "GUI.hpp"
 
-GUI::GUI() { setUp(); }
+GUI::GUI(int width_, int height_) : width(width_), height(height_) {
 
-GUI::~GUI() {
-    SDL_DestroyWindow(win);
-    SDL_Quit();
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
+    SDL_RenderClear(renderer);
 }
 
-void GUI::setUp() {
-    win = SDL_CreateWindow("Pandemic simulation",
-                           SDL_WINDOWPOS_CENTERED,
-                           SDL_WINDOWPOS_CENTERED,
-                           1000, 700, 0);
+
+
+GUI::~GUI() {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(win);
+    SDL_Quit();
 }
 
 
 int main() {
 
-    GUI gui{};
+    GUI gui(1000, 700);
     bool open = true;
     while (open) {
         SDL_Event event;

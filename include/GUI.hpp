@@ -6,11 +6,13 @@
 
 class GUI {
 private:
-    SDL_Window* win;
-    void setUp();
+    SDL_Window* win = nullptr;
+    SDL_Renderer* renderer = nullptr;
+
+    int width, height;
 
 public:
-    GUI();
+    GUI(int, int);
     ~GUI();
     SDL_Window* getWin() const { return win; };
 };
