@@ -5,7 +5,14 @@
 #include <SDL2/SDL_timer.h>
 
 class GUI {
+private:
+    SDL_Window* win;
+    void setUp();
 
+public:
+    GUI();
+    ~GUI();
+    SDL_Window* getWin() const { return win; };
 };
 
 
