@@ -1,5 +1,6 @@
 #include "GUI.hpp"
 #include <iostream>
+#include "Person.hpp"
 
 GUI::GUI(int width_, int height_) : width(width_), height(height_) {
 
@@ -42,6 +43,11 @@ void GUI::renderCircle(int x, int y) {
 int main() {
 
     GUI gui(1000, 1000);
+
+    Person::box = new Box{4, 4};
+    Person::speed = 3.0;
+    Person::size = 2.0;
+    Person p = Person();
 
     SDL_Event event;
     while(event.type != SDL_QUIT) {

@@ -4,37 +4,44 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-#include <Box.hpp>
+#include <map>
+#include <vector>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_image.h>
 
+struct Box{
+    unsigned int x = 30;
+    unsigned int y = 30;
+};
 
 class Person {
 private:
+    static Box* box;
+    static double speed;
+    static double size;
+
     HealthState healthState = HealthState::SUSCEPTIBLE;
-    std::pair<double, double> position;
     std::pair<double, double> direction;
-    Box* box;
+    std::map<Person*, int> nrHitsPPerson;
+    SDL_Rect dest;
 public:
-    Person(Box* box);
 
-    void updatePosition(std::pair<double, double> pos);
+    Person();
 
-    double calcDistance(Person other);
+    void updatePosition();
+
+    bool updateHealthState(std::vector<Person*> &infectedPeople);
+
+    void calcDistance(Person other);
 
     HealthState getHealthState() const;
 
     void setHealthState(HealthState healthState);
 
-    const std::pair<double, double> &getPosition() const;
-
-    void setPosition(double x, double y);
-
     const std::pair<double, double> &getDirection() const;
 
-    void setDirection(double x, double y);
-
-    Box *getBox() const;
-
-    void setBox(Box *box);
+    void setDirection(const double &xDirection, const double &yDirection);
 };
 
 

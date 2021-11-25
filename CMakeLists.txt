@@ -7,5 +7,5 @@ add_executable(ffp_tum src/main.cpp)
 
 # GUI Tests
 include_directories(include)
-add_executable(GUI_test src/GUI.cpp)
-target_link_libraries(GUI_test SDL2main SDL2)
+add_executable(GUI_test src/GUI.cpp src/Person.cpp)
+target_link_libraries(GUI_test SDL2main SDL2 SDL2_image)
