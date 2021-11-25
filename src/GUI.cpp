@@ -2,7 +2,6 @@
 #include <iostream>
 
 GUI::GUI(int width_, int height_) : width(width_), height(height_) {
-
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
     SDL_RenderClear(renderer);
@@ -35,7 +34,6 @@ void GUI::drawBox(int w, int h) {
 
 void GUI::renderCircle(int x, int y) {
     SDL_Surface* circle = IMG_Load("../assets/circle.svg");
-    if (circle == nullptr) std::cout << "Error";
     SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(renderer, circle);
     SDL_FreeSurface(circle);
 
@@ -62,4 +60,5 @@ int main() {
     }
 
     return 0;
+
 }

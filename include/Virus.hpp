@@ -6,9 +6,10 @@ class Virus {
 private:
     float spreadProb;
     float radius;
+    float recoveryProb;
 
 public:
-    Virus(float p, float r) : spreadProb(p), radius(r) {};
+    Virus(float spread, float radius, float recovery) : spreadProb(spread), radius(radius), recoveryProb(recovery) {};
 };
 
 
