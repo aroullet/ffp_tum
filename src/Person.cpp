@@ -10,15 +10,16 @@ Person::Person() {
         double xCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
         double yCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
-        this->setDirection(xCoord/length, yCoord/length);
+        this->direction = std::pair(xCoord/length, yCoord/length);
     }else{
-        std::cout << "e.what()" << std::endl;
+        std::cout << "The People don't know where to go!" << std::endl;
+        exit(1);
     }
 };
 
 void Person::updatePosition() {
     /**
-     * Vector pointing from the border to the direction where it penalizes the windowsize
+     * outOfWindow-Vector pointing from the border to the direction where it penalizes the windowsize
      *              |           * Person at the first state
      *              |           (*) the newstate by just using the given direction
      *            * | (*)
@@ -49,35 +50,51 @@ void Person::updatePosition() {
     dest.y = dest.y + direction.second*speed - 2*outOfWindow.second;
 }
 
-void Person::calcDistance(Person other){
-    //auto otherPos = other.getPosition();
-    //double x = otherPos.first - position.first;
-    //double y = otherPos.second - position.second;
-    //return sqrt(x*x + y*y);
-}
 
 HealthState Person::getHealthState() const {
     return healthState;
+}
+
+double Person::calcDistance(Person *other){
+    auto otherPos = other->getPosition();
+    double x = otherPos.first - dest.x;
+    double y = otherPos.second - dest.y;
+    return sqrt(x*x + y*y);
+}
+bool Person::updateHealthState(std::vector<Person *> &infectedPeople) {
+    for(auto iPerson: infectedPeople){
+        if(calcDistance(iPerson)<virus->radius){
+            if(++nrHitsPPerson[iPerson] >= virus->criticalNrTimeSteps){
+                healthState = HealthState::INFECTED;
+                //map can be cleared since this person is now infected
+                nrHitsPPerson.clear();
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::pair<double, double> Person::getPosition() {
+    return std::pair<double, double>(dest.x, dest.y);
+}
+
+void Person::deleteInfectedFromMap(std::vector<Person *> &people) {
+    for(auto person : people){
+        nrHitsPPerson.erase(person);
+    }
+}
+
+void Person::deleteInfectedFromMap(Person &person) {
+    nrHitsPPerson.erase(&person);
 }
 
 void Person::setHealthState(HealthState healthState) {
     Person::healthState = healthState;
 }
 
-const std::pair<double, double> &Person::getDirection() const {
-    return direction;
-}
-
-void Person::setDirection(const double &xDirection, const double &yDirection) {
-    Person::direction.first = xDirection;
-    Person::direction.second = yDirection;
-}
-
-bool Person::updateHealthState(std::vector<Person *> &infectedPeople) {
-    return false;
-}
-
 Box* Person::box;
+Virus* Person::virus;
 double Person::speed;
 double Person::size;
 

@@ -1,15 +1,21 @@
 #ifndef FFP_TUM_VIRUS_H
 #define FFP_TUM_VIRUS_H
 
-
-class Virus {
-private:
+struct Virus{
     float spreadProb;
     float radius;
-
-public:
-    Virus(float p, float r) : spreadProb(p), radius(r) {};
+    float recoveryProb;
+    unsigned int criticalNrTimeSteps;
 };
+//class Virus {
+//private:
+//    float spreadProb;
+//    float radius;
+//    float recoveryProb;
+//
+//public:
+//    Virus(float spread, float radius, float recovery) : spreadProb(spread), radius(radius), recoveryProb(recovery) {};
+//};
 
 
 #endif //FFP_TUM_VIRUS_H

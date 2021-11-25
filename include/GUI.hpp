@@ -1,5 +1,5 @@
-#ifndef FFP_TUM_GUI_HPP
-#define FFP_TUM_GUI_HPP
+#ifndef FFP_TUM_GUI_H
+#define FFP_TUM_GUI_H
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
@@ -11,6 +11,7 @@ private:
     SDL_Renderer* renderer = nullptr;
     int width, height;
 
+    void drawBox(int, int);
     void renderCircle(int, int);
 
 public:
@@ -20,4 +21,4 @@ public:
 };
 
 
-#endif //FFP_TUM_GUI_HPP
+#endif //FFP_TUM_GUI_H

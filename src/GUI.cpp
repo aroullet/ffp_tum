@@ -3,12 +3,13 @@
 #include "Person.hpp"
 
 GUI::GUI(int width_, int height_) : width(width_), height(height_) {
-
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
     SDL_RenderClear(renderer);
 
     renderCircle(10, 20);
+    drawBox(900, 900);
+    SDL_RenderPresent(renderer);
 }
 
 
@@ -21,9 +22,19 @@ GUI::~GUI() {
     SDL_Quit();
 }
 
+void GUI::drawBox(int w, int h) {
+    SDL_Rect box;
+    box.x = 50;
+    box.y = 50;
+    box.w = w;
+    box.h = h;
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderDrawRect(renderer, &box);
+}
+
 void GUI::renderCircle(int x, int y) {
     SDL_Surface* circle = IMG_Load("../assets/circle.svg");
-    if (circle == nullptr) std::cout << "Error";
     SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(renderer, circle);
     SDL_FreeSurface(circle);
 
@@ -36,18 +47,19 @@ void GUI::renderCircle(int x, int y) {
 
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, circleTexture, NULL, &dest);
-    SDL_RenderPresent(renderer);
 }
 
 
 int main() {
 
     GUI gui(1000, 1000);
-
-    Person::box = new Box{4, 4};
-    Person::speed = 3.0;
-    Person::size = 2.0;
-    Person p = Person();
+    std::unordered_map<int, int> map;
+    for (int i = 0; i<100; i++){
+        if(++map[i]<0){
+            break;
+        }
+        std::cout << map[i] << std::endl;
+    }
 
     SDL_Event event;
     while(event.type != SDL_QUIT) {
@@ -56,4 +68,5 @@ int main() {
     }
 
     return 0;
+
 }
