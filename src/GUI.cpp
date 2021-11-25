@@ -8,6 +8,8 @@ GUI::GUI(int width_, int height_) : width(width_), height(height_) {
     SDL_RenderClear(renderer);
 
     renderCircle(10, 20);
+    drawBox(900, 900);
+    SDL_RenderPresent(renderer);
 }
 
 
@@ -18,6 +20,17 @@ GUI::~GUI() {
 
     IMG_Quit();
     SDL_Quit();
+}
+
+void GUI::drawBox(int w, int h) {
+    SDL_Rect box;
+    box.x = 50;
+    box.y = 50;
+    box.w = w;
+    box.h = h;
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderDrawRect(renderer, &box);
 }
 
 void GUI::renderCircle(int x, int y) {
@@ -35,7 +48,6 @@ void GUI::renderCircle(int x, int y) {
 
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, circleTexture, NULL, &dest);
-    SDL_RenderPresent(renderer);
 }
 
 

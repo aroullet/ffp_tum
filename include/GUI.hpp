@@ -11,6 +11,7 @@ private:
     SDL_Renderer* renderer = nullptr;
     int width, height;
 
+    void drawBox(int, int);
     void renderCircle(int, int);
 
 public:
