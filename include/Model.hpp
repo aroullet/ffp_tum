@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Box.hpp"
-#include "Virus.hpp"
 #include "Person.hpp"
 
 /*
@@ -19,19 +18,20 @@
  * dR/dt = gamma*I
  */
 
+class GUI; // Need forward declaration to avoid circular dependency
+
 class Model {
 private:
-    unsigned int N;
-    Box box;
     Virus virus;
     std::vector<Person> people;
     std::vector<Person> recovered;
+    Box box;
 
-    void setUp();
     void updateState();
 
 public:
-    Model(unsigned int N, unsigned int sideLength, float prob, float radius) { setUp() };
+    Model(unsigned int N, unsigned int width, unsigned int height, float prob, float radius);
+    friend class GUI;
 };
 
 

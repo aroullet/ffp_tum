@@ -4,21 +4,22 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include "Model.hpp"
 
 class GUI {
 private:
     SDL_Window* win = nullptr;
     SDL_Renderer* renderer = nullptr;
-    int width, height;
+    SDL_Texture* person_tex = nullptr;
+    Model model;
 
     void drawBox(int, int);
+    void renderPeople();
 
 public:
-    GUI(int, int);
+    GUI(unsigned int, unsigned int, unsigned int, float, float);
     ~GUI();
-    SDL_Window* getWin() const { return win; };
-
-    void run(int);
+    void run();
 };
 
 

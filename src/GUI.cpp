@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Person.hpp"
 
-GUI::GUI(int width_, int height_) : width(width_), height(height_) {
+GUI::GUI(unsigned int N, unsigned int width, unsigned int height, float prob, float radius) : model(N, width, height, prob, radius) {
     //SDL_Init(SDL_INIT_VIDEO);
     //SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
     //SDL_RenderClear(renderer);
@@ -22,9 +22,10 @@ GUI::GUI(int width_, int height_) : width(width_), height(height_) {
     // creates a renderer to render our images
     renderer = SDL_CreateRenderer(win, -1, render_flags);
 
-    //renderCircle(10, 20);
-    //drawBox(900, 900);
-    //SDL_RenderPresent(renderer);
+    // Do it once in the constructor to move it out of method
+    SDL_Surface* person_sur = IMG_Load("../assets/circle.svg");
+    person_tex = SDL_CreateTextureFromSurface(renderer, person_sur);
+    SDL_FreeSurface(person_sur);
 }
 
 
@@ -46,6 +47,16 @@ void GUI::drawBox(int w, int h) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &box);
 }
+
+void GUI::renderPeople() {
+
+    SDL_RenderClear(renderer);
+    for (auto& person : model.people){
+        SDL_RenderCopy(renderer, person_tex, nullptr, &(person.dest));
+    }
+    SDL_RenderPresent(renderer);
+    SDL_Delay(50);
+}
 /**
  * This should be probably partially in the model class.
  * it creates an vector of person and just calles the update function
@@ -54,28 +65,14 @@ void GUI::drawBox(int w, int h) {
  *
  * you should probebly alway check if the quit button is pressed.
  */
-void GUI::run(int nPeople) {
-    SDL_Surface* person_sur = IMG_Load("../assets/circle.svg");
-    SDL_Texture* person_tex = SDL_CreateTextureFromSurface(renderer, person_sur);
-    SDL_FreeSurface(person_sur);
-    Person::s_size = 30;
-    Person::p_box = new Box{1000, 1000};
-    Person::s_speed = 10;
-    SDL_RenderClear(renderer);
-    std::vector<Person> v(nPeople);
-    for (auto i = 0; i< nPeople; i++){
-        v.push_back(Person());
-        SDL_RenderCopy(renderer, person_tex, NULL, &(v[i].dest));
+void GUI::run() {
+
+    renderPeople();
+    SDL_Event event;
+    while(event.type != SDL_QUIT) {
+        SDL_PollEvent(&event);
+        model.updateState();
+        renderPeople();
     }
-    SDL_RenderPresent(renderer);
-    SDL_Delay(50);
-    for(int i = 0; i< 400; i++){
-        SDL_RenderClear(renderer);
-        for(int j = 0; j<nPeople; j++){
-            v[j].updatePosition();
-            SDL_RenderCopy(renderer, person_tex, NULL, &(v[j].dest));
-        }
-        SDL_RenderPresent(renderer);
-        SDL_Delay(50);
-    }
+    std::cout << "Simulation over!" << std::endl;
 }

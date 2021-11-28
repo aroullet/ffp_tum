@@ -3,8 +3,8 @@
 
 
 struct Box {
-    const unsigned int x = 900;
-    const unsigned int y = 900;
+    unsigned int x = 1000;
+    unsigned int y = 1000;
 };
 
 #endif //FFP_TUM_BOX_H
