@@ -18,6 +18,8 @@ public:
     GUI(int, int);
     ~GUI();
     SDL_Window* getWin() const { return win; };
+
+    void renderPerson();
 };
 
 

@@ -2,13 +2,12 @@
 
 Person::Person() {
     if(box){
-        this->box = box;
         dest.h = size/2;
         dest.w = size/2;
         dest.x = (1.0 * rand()*box->x)/RAND_MAX;
         dest.y = (1.0 * rand()*box->y)/RAND_MAX;
-        double xCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
-        double yCoord= (0.5 * (rand()-RAND_MAX))/RAND_MAX;
+        double xCoord= (1.0 * rand()-0.5*RAND_MAX);
+        double yCoord= (1.0 * rand()-0.5*RAND_MAX);
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
         this->direction = std::pair(xCoord/length, yCoord/length);
     }else{
@@ -30,24 +29,27 @@ void Person::updatePosition() {
      * Important the direction needs to be updated as well.
      */
     std::pair<double, double> outOfWindow{0,0};
+    std::pair<double, double> newDirection = direction;
     if(dest.x + direction.first*speed>box->x){
         outOfWindow.first = (dest.x + direction.first*speed) - box->x;
-        this->direction.first = -this->direction.first;
+        newDirection.first = -this->direction.first;
     }
     if(dest.y + direction.second*speed>box->y){
         outOfWindow.second = (dest.y + direction.second*speed) - box->y;
-        this->direction.second = -this->direction.second;
+        newDirection.second = -this->direction.second;
     }
     if(dest.x + direction.first*speed<0){
         outOfWindow.first = (dest.x + direction.first*speed);
-        this->direction.first = -this->direction.first;
+        newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*speed>0){
+    if(dest.y + direction.second*speed<0){
         outOfWindow.second = (dest.y + direction.second*speed);
-        this->direction.second = -this->direction.second;
+        newDirection.second = -this->direction.second;
     }
-    dest.x = dest.x + direction.first*speed - 2*outOfWindow.first;
-    dest.y = dest.y + direction.second*speed - 2*outOfWindow.second;
+    dest.x += (direction.first*speed - 2*outOfWindow.first);
+    dest.y +=  (direction.second*speed - 2*outOfWindow.second);
+    direction = newDirection;
+
 }
 
 
@@ -93,8 +95,12 @@ void Person::setHealthState(HealthState healthState) {
     Person::healthState = healthState;
 }
 
+SDL_Rect &Person::getDest() {
+    return dest;
+}
+
 Box* Person::box;
-Virus* Person::virus;
+Virus* Person::virus = new Virus{0.5, 1.0, 2.0, 3};
 double Person::speed;
 double Person::size;
 

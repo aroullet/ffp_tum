@@ -11,7 +11,7 @@
 #include <SDL2/SDL_image.h>
 
 class Person {
-private:
+public:
     /**
      * Static Attributes:
      * @param box - Given Box for the people wandering around
@@ -87,6 +87,8 @@ public:
     void deleteInfectedFromMap(Person &person);
 
     void setHealthState(HealthState healthState);
+
+    SDL_Rect &getDest();
 
     HealthState getHealthState() const;
 
