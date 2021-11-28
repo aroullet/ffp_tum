@@ -19,10 +19,10 @@ public:
      * @param speed - The speed people move.
      * @param size - Double the size of a person in the gui.
      */
-    static Box* box;
-    static Virus* virus;
-    static double speed;
-    static double size;
+    static Box* p_box;
+    static Virus* s_virus;
+    static double s_speed;
+    static double s_size;
 
     /**
      * Local, private, non-static Attributes:

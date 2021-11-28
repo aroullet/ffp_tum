@@ -12,14 +12,13 @@ private:
     int width, height;
 
     void drawBox(int, int);
-    void renderCircle(int, int);
 
 public:
     GUI(int, int);
     ~GUI();
     SDL_Window* getWin() const { return win; };
 
-    void renderPerson();
+    void run(int);
 };
 
 

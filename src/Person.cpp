@@ -1,11 +1,11 @@
 #include "Person.hpp"
 
 Person::Person() {
-    if(box){
-        dest.h = size/2;
-        dest.w = size/2;
-        dest.x = (1.0 * rand()*box->x)/RAND_MAX;
-        dest.y = (1.0 * rand()*box->y)/RAND_MAX;
+    if(p_box){
+        dest.h = s_size/2;
+        dest.w = s_size/2;
+        dest.x = (1.0 * rand()*p_box->x)/RAND_MAX;
+        dest.y = (1.0 * rand()*p_box->y)/RAND_MAX;
         double xCoord= (1.0 * rand()-0.5*RAND_MAX);
         double yCoord= (1.0 * rand()-0.5*RAND_MAX);
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
@@ -30,24 +30,24 @@ void Person::updatePosition() {
      */
     std::pair<double, double> outOfWindow{0,0};
     std::pair<double, double> newDirection = direction;
-    if(dest.x + direction.first*speed>box->x){
-        outOfWindow.first = (dest.x + direction.first*speed) - box->x;
+    if(dest.x + direction.first*s_speed>p_box->x){
+        outOfWindow.first = (dest.x + direction.first*s_speed) - p_box->x;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*speed>box->y){
-        outOfWindow.second = (dest.y + direction.second*speed) - box->y;
+    if(dest.y + direction.second*s_speed>p_box->y){
+        outOfWindow.second = (dest.y + direction.second*s_speed) - p_box->y;
         newDirection.second = -this->direction.second;
     }
-    if(dest.x + direction.first*speed<0){
-        outOfWindow.first = (dest.x + direction.first*speed);
+    if(dest.x + direction.first*s_speed<0){
+        outOfWindow.first = (dest.x + direction.first*s_speed);
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*speed<0){
-        outOfWindow.second = (dest.y + direction.second*speed);
+    if(dest.y + direction.second*s_speed<0){
+        outOfWindow.second = (dest.y + direction.second*s_speed);
         newDirection.second = -this->direction.second;
     }
-    dest.x += (direction.first*speed - 2*outOfWindow.first);
-    dest.y +=  (direction.second*speed - 2*outOfWindow.second);
+    dest.x += (direction.first*s_speed - 2*outOfWindow.first);
+    dest.y +=  (direction.second*s_speed - 2*outOfWindow.second);
     direction = newDirection;
 
 }
@@ -65,8 +65,8 @@ double Person::calcDistance(Person *other){
 }
 bool Person::updateHealthState(std::vector<Person *> &infectedPeople) {
     for(auto iPerson: infectedPeople){
-        if(calcDistance(iPerson)<virus->radius){
-            if(++nrHitsPPerson[iPerson] >= virus->criticalNrTimeSteps){
+        if(calcDistance(iPerson)<s_virus->radius){
+            if(++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps){
                 healthState = HealthState::INFECTED;
                 //map can be cleared since this person is now infected
                 nrHitsPPerson.clear();
@@ -99,8 +99,8 @@ SDL_Rect &Person::getDest() {
     return dest;
 }
 
-Box* Person::box;
-Virus* Person::virus = new Virus{0.5, 1.0, 2.0, 3};
-double Person::speed;
-double Person::size;
+Box* Person::p_box;
+Virus* Person::s_virus = new Virus{0.5, 1.0, 2.0, 3};
+double Person::s_speed;
+double Person::s_size;
 

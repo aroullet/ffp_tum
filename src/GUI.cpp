@@ -23,11 +23,9 @@ GUI::GUI(int width_, int height_) : width(width_), height(height_) {
     renderer = SDL_CreateRenderer(win, -1, render_flags);
 
     //renderCircle(10, 20);
-    renderPerson();
     //drawBox(900, 900);
     //SDL_RenderPresent(renderer);
 }
-
 
 
 GUI::~GUI() {
@@ -48,25 +46,6 @@ void GUI::drawBox(int w, int h) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &box);
 }
-
-void GUI::renderCircle(int x, int y) {
-    SDL_Surface* circle = IMG_Load("../assets/circle.svg");
-    SDL_Texture* circleTexture = SDL_CreateTextureFromSurface(renderer, circle);
-    SDL_FreeSurface(circle);
-
-    SDL_Rect dest;
-    dest.h = height/2;
-    dest.w = width/2;
-    dest.h = 30;
-    dest.w = 30;
-
-    dest.x = (width - dest.w)/2;
-    dest.y = (height - dest.h)/2;
-
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, circleTexture, NULL, &dest);
-}
-
 /**
  * This should be probably partially in the model class.
  * it creates an vector of person and just calles the update function
@@ -75,46 +54,28 @@ void GUI::renderCircle(int x, int y) {
  *
  * you should probebly alway check if the quit button is pressed.
  */
-void GUI::renderPerson() {
-    std::cout << "Please enter the number of Persons to be visualized: ";
+void GUI::run(int nPeople) {
     SDL_Surface* person_sur = IMG_Load("../assets/circle.svg");
     SDL_Texture* person_tex = SDL_CreateTextureFromSurface(renderer, person_sur);
     SDL_FreeSurface(person_sur);
-    Person::size = 30;
-    Person::box = new Box{1000, 1000};
-    Person::speed = 10;
-    int nrpeople;
-    std::cin>> nrpeople;
+    Person::s_size = 30;
+    Person::p_box = new Box{1000, 1000};
+    Person::s_speed = 10;
     SDL_RenderClear(renderer);
-    std::vector<Person> v;
-    for (auto i = 0; i< nrpeople; i++){
+    std::vector<Person> v(nPeople);
+    for (auto i = 0; i< nPeople; i++){
         v.push_back(Person());
         SDL_RenderCopy(renderer, person_tex, NULL, &(v[i].dest));
     }
     SDL_RenderPresent(renderer);
-    SDL_Delay(100);
+    SDL_Delay(50);
     for(int i = 0; i< 400; i++){
         SDL_RenderClear(renderer);
-        for(int j = 0; j<nrpeople; j++){
+        for(int j = 0; j<nPeople; j++){
             v[j].updatePosition();
             SDL_RenderCopy(renderer, person_tex, NULL, &(v[j].dest));
         }
         SDL_RenderPresent(renderer);
-        SDL_Delay(100);
+        SDL_Delay(50);
     }
-}
-
-
-int main() {
-
-    GUI gui(1000, 1000);
-
-    SDL_Event event;
-    while(event.type != SDL_QUIT) {
-        SDL_Delay(10);
-        SDL_PollEvent(&event);
-    }
-
-    return 0;
-
 }
