@@ -6,6 +6,7 @@
 #include "Virus.hpp"
 #include <unordered_map>
 #include <vector>
+#include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -33,7 +34,7 @@ public:
      */
     HealthState healthState;
     std::pair<double, double> direction;
-    std::unordered_map<Person*, unsigned int> nrHitsPPerson;
+    std::unordered_map<std::shared_ptr<Person>, unsigned int> nrHitsPPerson;
     SDL_Rect dest;
     /**
      * This function should be private since we do not need to calculate the distance
@@ -42,7 +43,7 @@ public:
      * @param other - another Person to which we calculate the euclidean distance
      * @return - the distance
      */
-    double calcDistance(Person *other);
+    double calcDistance(std::shared_ptr<Person> other);
 public:
 
     /**
@@ -68,7 +69,7 @@ public:
      * @param infectedPeople - set of people which are currently infected
      * @return - true if this Person changes its healthState
      */
-    bool updateHealthState(std::vector<Person*> &infectedPeople);
+    bool updateHealthState(std::vector<std::shared_ptr<Person>> &infectedPeople);
 
     /**
      * People out of range should be deleted or set to zero.
@@ -76,7 +77,7 @@ public:
      *
      * @param people - a vector of person-pointers
      */
-    void deleteInfectedFromMap(std::vector<Person*> &people);
+    void deleteInfectedFromMap(std::vector<std::shared_ptr<Person>> &people);
 
     /**
      * A person out of range should be deleted or set to zero.
@@ -84,7 +85,6 @@ public:
      *
      * @param person
      */
-    void deleteInfectedFromMap(Person &person);
 
     void setHealthState(HealthState healthState);
 

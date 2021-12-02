@@ -36,6 +36,7 @@ GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height
 GUI::~GUI() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
+    SDL_DestroyTexture(person_tex);
 
     IMG_Quit();
     SDL_Quit();
@@ -60,16 +61,9 @@ void GUI::renderPeople() {
     for(auto&person:model.infected)
         SDL_RenderCopy(renderer, infected_tex, nullptr, &(person->dest));
     SDL_RenderPresent(renderer);
-    SDL_Delay(50);
+    SDL_Delay(10);
 }
-/**
- * This should be probably partially in the model class.
- * it creates an vector of person and just calles the update function
- * of a person to get their new position.
- * It might be helpful.
- *
- * you should probebly alway check if the quit button is pressed.
- */
+
 void GUI::run() {
 
     renderPeople();

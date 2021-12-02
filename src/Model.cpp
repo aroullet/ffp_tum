@@ -16,13 +16,13 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
     Person::s_speed = 10;
     Person::s_virus = &virus;//new Virus{0.5, 10.0, 2.0, 1}
 
-    people = std::vector<Person*>(N-iN);
+    people = std::vector<std::shared_ptr<Person>>(N-iN);
     for (unsigned int i = 0; i < N-iN; i++ ){
-        people[i] = new Person();
+        people[i] = std::make_shared<Person>();
     }
-    infected = std::vector<Person*>(iN);
+    infected = std::vector<std::shared_ptr<Person>>(iN);
     for (unsigned int i = 0; i < iN; i++ ){
-        infected[i] = new Person(HealthState::INFECTED);
+        infected[i] = std::make_shared<Person>(HealthState::INFECTED);
     }
     //recovered = std::vector<Person>(N); // Initializing with size N to avoid resizing
 }
@@ -34,7 +34,7 @@ void Model::updateState() {
     for (auto person : infected) {
         person->updatePosition();
     }
-    std::vector<Person*> newlyInfected;
+    std::vector<std::shared_ptr<Person>> newlyInfected;
     std::vector<int> position;
     for (long unsigned int i = 0; i < people.size(); i++) {
         bool state_changed = people[i]->updateHealthState(infected);

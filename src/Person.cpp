@@ -58,13 +58,13 @@ HealthState Person::getHealthState() const {
     return healthState;
 }
 
-double Person::calcDistance(Person *other){
+double Person::calcDistance(std::shared_ptr<Person> other){
     auto otherPos = other->getPosition();
     double x = otherPos.first - dest.x;
     double y = otherPos.second - dest.y;
     return sqrt(x*x + y*y);
 }
-bool Person::updateHealthState(std::vector<Person*> &infectedPeople) {
+bool Person::updateHealthState(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
         if(calcDistance(iPerson)<s_virus->radius){
@@ -85,14 +85,10 @@ std::pair<double, double> Person::getPosition() {
     return std::pair<double, double>(dest.x, dest.y);
 }
 
-void Person::deleteInfectedFromMap(std::vector<Person*> &people) {
+void Person::deleteInfectedFromMap(std::vector<std::shared_ptr<Person>> &people) {
     for(auto person : people){
         nrHitsPPerson.erase(person);
     }
-}
-
-void Person::deleteInfectedFromMap(Person &person) {
-    nrHitsPPerson.erase(&person);
 }
 
 void Person::setHealthState(HealthState healthState) {

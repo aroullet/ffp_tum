@@ -2,6 +2,7 @@
 #define FFP_TUM_MODEL_H
 
 #include <vector>
+#include <memory>
 #include "Box.hpp"
 #include "Person.hpp"
 
@@ -23,9 +24,9 @@ class GUI; // Need forward declaration to avoid circular dependency
 class Model {
 private:
     Virus virus;
-    std::vector<Person*> people;
-    std::vector<Person*> infected;
-    std::vector<Person> recovered;
+    std::vector<std::shared_ptr<Person>> people;
+    std::vector<std::shared_ptr<Person>> infected;
+    std::vector<std::shared_ptr<Person>> recovered;
     Box box;
 
     void updateState();
