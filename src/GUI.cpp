@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Person.hpp"
 
-GUI::GUI(unsigned int N, unsigned int width, unsigned int height, float prob, float radius) : model(N, width, height, prob, radius) {
+GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius) : model(N,iN, width, height, prob, radius) {
     //SDL_Init(SDL_INIT_VIDEO);
     //SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
     //SDL_RenderClear(renderer);
@@ -23,9 +23,13 @@ GUI::GUI(unsigned int N, unsigned int width, unsigned int height, float prob, fl
     renderer = SDL_CreateRenderer(win, -1, render_flags);
 
     // Do it once in the constructor to move it out of method
-    SDL_Surface* person_sur = IMG_Load("../assets/circle.svg");
+    SDL_Surface* person_sur = IMG_Load("../assets/susceptible.svg");
     person_tex = SDL_CreateTextureFromSurface(renderer, person_sur);
     SDL_FreeSurface(person_sur);
+
+    SDL_Surface* infected_sur = IMG_Load("../assets/infected.svg");
+    infected_tex = SDL_CreateTextureFromSurface(renderer, infected_sur);
+    SDL_FreeSurface(infected_sur);
 }
 
 
@@ -51,9 +55,10 @@ void GUI::drawBox(int w, int h) {
 void GUI::renderPeople() {
 
     SDL_RenderClear(renderer);
-    for (auto& person : model.people){
-        SDL_RenderCopy(renderer, person_tex, nullptr, &(person.dest));
-    }
+    for (auto& person : model.people)
+        SDL_RenderCopy(renderer, person_tex, nullptr, &(person->dest));
+    for(auto&person:model.infected)
+        SDL_RenderCopy(renderer, infected_tex, nullptr, &(person->dest));
     SDL_RenderPresent(renderer);
     SDL_Delay(50);
 }

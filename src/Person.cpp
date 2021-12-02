@@ -1,7 +1,8 @@
 #include "Person.hpp"
 
-Person::Person() {
+Person::Person(HealthState state) {
     if(p_box){
+        healthState = state;
         dest.h = s_size/2;
         dest.w = s_size/2;
         dest.x = (1.0 * rand()*p_box->x)/RAND_MAX;
@@ -30,12 +31,12 @@ void Person::updatePosition() {
      */
     std::pair<double, double> outOfWindow{0,0};
     std::pair<double, double> newDirection = direction;
-    if(dest.x + direction.first*s_speed>p_box->x){
-        outOfWindow.first = (dest.x + direction.first*s_speed) - p_box->x;
+    if(dest.x + direction.first*s_speed+dest.w>p_box->x){
+        outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - p_box->x;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*s_speed>p_box->y){
-        outOfWindow.second = (dest.y + direction.second*s_speed) - p_box->y;
+    if(dest.y + direction.second*s_speed+dest.h>p_box->y){
+        outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - p_box->y;
         newDirection.second = -this->direction.second;
     }
     if(dest.x + direction.first*s_speed<0){
@@ -63,8 +64,9 @@ double Person::calcDistance(Person *other){
     double y = otherPos.second - dest.y;
     return sqrt(x*x + y*y);
 }
-bool Person::updateHealthState(std::vector<Person *> &infectedPeople) {
+bool Person::updateHealthState(std::vector<Person*> &infectedPeople) {
     for(auto iPerson: infectedPeople){
+        //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
         if(calcDistance(iPerson)<s_virus->radius){
             if(++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps){
                 healthState = HealthState::INFECTED;
@@ -72,6 +74,8 @@ bool Person::updateHealthState(std::vector<Person *> &infectedPeople) {
                 nrHitsPPerson.clear();
                 return true;
             }
+        }else{
+            nrHitsPPerson[iPerson] = 0;
         }
     }
     return false;
@@ -81,7 +85,7 @@ std::pair<double, double> Person::getPosition() {
     return std::pair<double, double>(dest.x, dest.y);
 }
 
-void Person::deleteInfectedFromMap(std::vector<Person *> &people) {
+void Person::deleteInfectedFromMap(std::vector<Person*> &people) {
     for(auto person : people){
         nrHitsPPerson.erase(person);
     }
@@ -100,7 +104,7 @@ SDL_Rect &Person::getDest() {
 }
 
 Box* Person::p_box;
-Virus* Person::s_virus = new Virus{0.5, 1.0, 2.0, 3};
+Virus* Person::s_virus;
 double Person::s_speed;
 double Person::s_size;
 

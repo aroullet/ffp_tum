@@ -2,7 +2,7 @@
 #define FFP_TUM_HEALTHSTATE_HPP
 
 
-enum class HealthState {
+enum HealthState {
     SUSCEPTIBLE,
     RECOVERED,
     INFECTED

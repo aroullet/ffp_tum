@@ -23,14 +23,15 @@ class GUI; // Need forward declaration to avoid circular dependency
 class Model {
 private:
     Virus virus;
-    std::vector<Person> people;
+    std::vector<Person*> people;
+    std::vector<Person*> infected;
     std::vector<Person> recovered;
     Box box;
 
     void updateState();
 
 public:
-    Model(unsigned int N, unsigned int width, unsigned int height, float prob, float radius);
+    Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius);
     friend class GUI;
 };
 

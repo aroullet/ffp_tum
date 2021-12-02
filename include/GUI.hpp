@@ -11,13 +11,14 @@ private:
     SDL_Window* win = nullptr;
     SDL_Renderer* renderer = nullptr;
     SDL_Texture* person_tex = nullptr;
+    SDL_Texture* infected_tex = nullptr;
     Model model;
 
     void drawBox(int, int);
     void renderPeople();
 
 public:
-    GUI(unsigned int, unsigned int, unsigned int, float, float);
+    GUI(unsigned int, unsigned int, unsigned int, unsigned int, float, float);
     ~GUI();
     void run();
 };

@@ -31,9 +31,9 @@ public:
      * @param nrHitsPPerson -
      * @param dest - the object for the
      */
-    HealthState healthState = HealthState::SUSCEPTIBLE;
+    HealthState healthState;
     std::pair<double, double> direction;
-    std::unordered_map<Person*, int> nrHitsPPerson;
+    std::unordered_map<Person*, unsigned int> nrHitsPPerson;
     SDL_Rect dest;
     /**
      * This function should be private since we do not need to calculate the distance
@@ -50,7 +50,7 @@ public:
      * The SDLRect is set to a position randomly in the given box with the given size of the
      * person's picture. And a randomized normalized direction vector is set.
      */
-    Person();
+    explicit Person(HealthState state=HealthState::SUSCEPTIBLE);
 
     /**
      * This updates the position of this Person for one timestep. according to the given direction.
