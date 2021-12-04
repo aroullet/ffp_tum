@@ -69,28 +69,8 @@ public:
      * @param infectedPeople - set of people which are currently infected
      * @return - true if this Person changes its healthState
      */
-    bool updateHealthState(std::vector<std::shared_ptr<Person>> &infectedPeople);
-
-    /**
-     * People out of range should be deleted or set to zero.
-     * This function just deletes(sets to zero) the person in the nrHitsPPerson-Map.
-     *
-     * @param people - a vector of person-pointers
-     */
-    void deleteInfectedFromMap(std::vector<std::shared_ptr<Person>> &people);
-
-    /**
-     * A person out of range should be deleted or set to zero.
-     * This function just deletes(sets to zero) the person in the nrHitsPPerson-Map.
-     *
-     * @param person
-     */
-
-    void setHealthState(HealthState healthState);
-
-    SDL_Rect &getDest();
-
-    HealthState getHealthState() const;
+    bool checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople);
+    bool checkRecovery();
 
     std::pair<double, double> getPosition();
 };

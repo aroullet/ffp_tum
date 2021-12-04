@@ -30,6 +30,10 @@ GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height
     SDL_Surface* infected_sur = IMG_Load("../assets/infected.svg");
     infected_tex = SDL_CreateTextureFromSurface(renderer, infected_sur);
     SDL_FreeSurface(infected_sur);
+
+    SDL_Surface* recovered_sur = IMG_Load("../assets/recovered.svg");
+    recovered_tex = SDL_CreateTextureFromSurface(renderer, recovered_sur);
+    SDL_FreeSurface(recovered_sur);
 }
 
 
@@ -37,6 +41,9 @@ GUI::~GUI() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
     SDL_DestroyTexture(person_tex);
+    SDL_DestroyTexture(infected_tex);
+    SDL_DestroyTexture(recovered_tex);
+
 
     IMG_Quit();
     SDL_Quit();
@@ -58,10 +65,18 @@ void GUI::renderPeople() {
     SDL_RenderClear(renderer);
     for (auto& person : model.people)
         SDL_RenderCopy(renderer, person_tex, nullptr, &(person->dest));
-    for(auto&person:model.infected)
+
+    for (auto&person : model.infected)
         SDL_RenderCopy(renderer, infected_tex, nullptr, &(person->dest));
-    SDL_RenderPresent(renderer);
-    SDL_Delay(10);
+
+    // Avoid segmentation fault when trying to render elements of an empty vector
+    if (model.anyRecovered) {
+        for (auto &person: model.recovered)
+            SDL_RenderCopy(renderer, recovered_tex, nullptr, &(person->dest));
+
+        SDL_RenderPresent(renderer);
+        SDL_Delay(10);
+    }
 }
 
 void GUI::run() {

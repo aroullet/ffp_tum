@@ -29,6 +29,9 @@ private:
     std::vector<std::shared_ptr<Person>> recovered;
     Box box;
 
+    bool anyRecovered;
+
+    void movePeople(std::vector<std::shared_ptr<Person>>);
     void updateState();
 
 public:

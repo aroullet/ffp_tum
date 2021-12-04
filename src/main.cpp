@@ -40,7 +40,7 @@ int main() {
 
     SDL_Event event;
     while(event.type != SDL_QUIT) {
-        SDL_Delay(10);
+        SDL_Delay(25);
         SDL_PollEvent(&event);
     }
 

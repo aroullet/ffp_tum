@@ -1,4 +1,5 @@
 #include "Person.hpp"
+#include <random>
 
 Person::Person(HealthState state) {
     if(p_box){
@@ -54,17 +55,13 @@ void Person::updatePosition() {
 }
 
 
-HealthState Person::getHealthState() const {
-    return healthState;
-}
-
 double Person::calcDistance(std::shared_ptr<Person> other){
     auto otherPos = other->getPosition();
     double x = otherPos.first - dest.x;
     double y = otherPos.second - dest.y;
     return sqrt(x*x + y*y);
 }
-bool Person::updateHealthState(std::vector<std::shared_ptr<Person>> &infectedPeople) {
+bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
         if(calcDistance(iPerson)<s_virus->radius){
@@ -81,23 +78,25 @@ bool Person::updateHealthState(std::vector<std::shared_ptr<Person>> &infectedPeo
     return false;
 }
 
+bool Person::checkRecovery() {
+    // Found online, but there might be a better way.
+    std::random_device rd;
+    std::default_random_engine eng(rd());
+    std::uniform_real_distribution<float> distr(0, 1);
+
+    float randomNumber = distr(eng);
+    if (randomNumber < s_virus->recoveryProb) {
+        healthState = HealthState::RECOVERED;
+        return true;
+    }
+    return false;
+
+}
+
 std::pair<double, double> Person::getPosition() {
     return std::pair<double, double>(dest.x, dest.y);
 }
 
-void Person::deleteInfectedFromMap(std::vector<std::shared_ptr<Person>> &people) {
-    for(auto person : people){
-        nrHitsPPerson.erase(person);
-    }
-}
-
-void Person::setHealthState(HealthState healthState) {
-    Person::healthState = healthState;
-}
-
-SDL_Rect &Person::getDest() {
-    return dest;
-}
 
 Box* Person::p_box;
 Virus* Person::s_virus;
