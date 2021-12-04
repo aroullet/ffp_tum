@@ -8,7 +8,7 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
     virus.spreadProb = prob;
     virus.radius = radius; //radius and hits are the only thing that matter do far
     virus.criticalNrTimeSteps = 1; // just hitting it once
-    virus.recoveryProb = 0.003; // 0.3% chance to recover at each time step
+    virus.recoveryProb = 0.002; // 0.2% chance to recover at each time step
 
     // Important, these have to be initialized before the people vector
     Person::s_size = 30;

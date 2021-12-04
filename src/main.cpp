@@ -24,7 +24,7 @@ int main() {
     unsigned int width = 1000;
     unsigned int height = 1000;
     float spreadProb =0.5;//irrelevant so far
-    float radius = 10;//nearly direct hits
+    float squareRadius = 100;//nearly direct hits
     // Get user input for all variables to initialize model
     std::cout << "Enter total number of people to visualize: ";
     std::cin >> nPeople;
@@ -35,7 +35,7 @@ int main() {
         std::cin >> nInfected;
     }
 
-    GUI gui(nPeople, nInfected, width, height, spreadProb, radius);
+    GUI gui(nPeople, nInfected, width, height, spreadProb, squareRadius);
     gui.run();
 
     SDL_Event event;

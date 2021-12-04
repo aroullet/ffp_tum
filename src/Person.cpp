@@ -55,16 +55,16 @@ void Person::updatePosition() {
 }
 
 
-double Person::calcDistance(std::shared_ptr<Person> other){
+double Person::calcSquareDistance(std::shared_ptr<Person> other){
     auto otherPos = other->getPosition();
     double x = otherPos.first - dest.x;
     double y = otherPos.second - dest.y;
-    return sqrt(x*x + y*y);
+    return x*x + y*y;
 }
 bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
-        if(calcDistance(iPerson)<s_virus->radius){
+        if(calcSquareDistance(iPerson)<s_virus->radius){
             if(++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps){
                 healthState = HealthState::INFECTED;
                 //map can be cleared since this person is now infected

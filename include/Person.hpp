@@ -43,7 +43,7 @@ public:
      * @param other - another Person to which we calculate the euclidean distance
      * @return - the distance
      */
-    double calcDistance(std::shared_ptr<Person> other);
+    double calcSquareDistance(std::shared_ptr<Person> other);
 public:
 
     /**

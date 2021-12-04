@@ -75,7 +75,7 @@ void GUI::renderPeople() {
             SDL_RenderCopy(renderer, recovered_tex, nullptr, &(person->dest));
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(10);
+        SDL_Delay(50);
     }
 }
 
