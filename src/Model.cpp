@@ -6,7 +6,7 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
     box.x = width;
     box.y = height;
     virus.spreadProb = prob;
-    virus.radius = radius; //radius and hits are the only thing that matter do far
+    virus.squareRadius = radius; //radius and hits are the only thing that matter do far
     virus.criticalNrTimeSteps = 1; // just hitting it once
     virus.recoveryProb = 0.002; // 0.2% chance to recover at each time step
 
@@ -24,9 +24,6 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
     for (unsigned int i = 0; i < iN; i++ ){
         infected[i] = std::make_shared<Person>(HealthState::INFECTED);
     }
-    recovered.reserve(N); // Don't call constructor as it needs to be empty at first.
-
-    anyRecovered = false; // flag to check if anyone has recovered
 }
 
 void Model::movePeople(std::vector<std::shared_ptr<Person>> peopleVector) {
@@ -39,11 +36,9 @@ void Model::updateState() {
     // New method to keep the code DRY
     movePeople(people);
     movePeople(infected);
+    movePeople(recovered);
 
-    if (anyRecovered)
-        movePeople(recovered);
-
-    // But ironically there's a lot of repetition in the next section :D
+    // The next few blocks have a lot of repetition, need to wrap it up in a nice function that takes a callback function as argument.
     std::vector<std::shared_ptr<Person>> newlyInfected;
     std::vector<int> positionNewlyInfected;
     for (long unsigned int i = 0; i < people.size(); i++) {
@@ -59,7 +54,6 @@ void Model::updateState() {
     for (long unsigned int i = 0; i < infected.size(); i++) {
         bool state_changed = infected[i]->checkRecovery();
         if(state_changed){
-            anyRecovered = true;
             newlyRecovered.push_back(infected[i]);
             positionNewlyRecovered.push_back(i);
         }

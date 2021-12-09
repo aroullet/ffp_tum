@@ -3,9 +3,6 @@
 #include "Person.hpp"
 
 GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius) : model(N,iN, width, height, prob, radius) {
-    //SDL_Init(SDL_INIT_VIDEO);
-    //SDL_CreateWindowAndRenderer(width, height, 0, &win, &renderer);
-    //SDL_RenderClear(renderer);
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("error initializing SDL: %s\n", SDL_GetError());
@@ -69,14 +66,10 @@ void GUI::renderPeople() {
     for (auto&person : model.infected)
         SDL_RenderCopy(renderer, infected_tex, nullptr, &(person->dest));
 
-    // Avoid segmentation fault when trying to render elements of an empty vector
-    if (model.anyRecovered) {
-        for (auto &person: model.recovered)
-            SDL_RenderCopy(renderer, recovered_tex, nullptr, &(person->dest));
+    for (auto &person: model.recovered)
+        SDL_RenderCopy(renderer, recovered_tex, nullptr, &(person->dest));
 
-        SDL_RenderPresent(renderer);
-        SDL_Delay(50);
-    }
+    SDL_RenderPresent(renderer);
 }
 
 void GUI::run() {
@@ -87,6 +80,7 @@ void GUI::run() {
         SDL_PollEvent(&event);
         model.updateState();
         renderPeople();
+        SDL_Delay(30);
     }
     std::cout << "Simulation over!" << std::endl;
 }

@@ -38,10 +38,12 @@ public:
     SDL_Rect dest;
     /**
      * This function should be private since we do not need to calculate the distance
-     * outside of this class
+     * outside of this class.
+     * Calculating the squared distance is enough and avoids the overhead of computing
+     * the square root.
      *
      * @param other - another Person to which we calculate the euclidean distance
-     * @return - the distance
+     * @return - the squared distance
      */
     double calcSquareDistance(std::shared_ptr<Person> other);
 public:
@@ -54,7 +56,7 @@ public:
     explicit Person(HealthState state=HealthState::SUSCEPTIBLE);
 
     /**
-     * This updates the position of this Person for one timestep. according to the given direction.
+     * This updates the position of this Person for one timestep according to the given direction.
      * It also respects the boundaries of the box an redirects the person in a sense that the position
      * is still in the box although the direction might at first says differently and the direction
      * is set as it bounces of the wall of the box.
@@ -70,6 +72,13 @@ public:
      * @return - true if this Person changes its healthState
      */
     bool checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople);
+    /**
+     * This iterates over the given set of infected people. Compares their distance
+     * with this given Person and increases the map value if a specific person from this
+     * set is too close according to the virus.
+     *
+     * @return - true if this Person recovers based on Virus.recoveryProb
+     */
     bool checkRecovery();
 
     std::pair<double, double> getPosition();

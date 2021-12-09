@@ -3,7 +3,7 @@
 
 struct Virus{
     float spreadProb;
-    float radius;
+    float squareRadius;
     float recoveryProb;
     unsigned int criticalNrTimeSteps;
 };

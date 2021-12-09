@@ -29,9 +29,15 @@ private:
     std::vector<std::shared_ptr<Person>> recovered;
     Box box;
 
-    bool anyRecovered;
-
+    /**
+     * Updates position of everyone regardless of their HealthState.
+     */
     void movePeople(std::vector<std::shared_ptr<Person>>);
+
+    /**
+     * Runs the infection checks for all susceptible people and checks recovery
+     * for each infected person for one time step.
+     */
     void updateState();
 
 public:

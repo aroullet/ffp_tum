@@ -16,11 +16,18 @@ private:
     Model model;
 
     void drawBox(int, int);
+
+    /**
+     * Renders people to the screen with color based on their HealthState.
+     */
     void renderPeople();
 
 public:
     GUI(unsigned int, unsigned int, unsigned int, unsigned int, float, float);
     ~GUI();
+    /**
+     * Runs the main loop for each time step.
+     */
     void run();
 };
 

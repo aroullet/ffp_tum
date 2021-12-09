@@ -51,11 +51,10 @@ void Person::updatePosition() {
     dest.x += (direction.first*s_speed - 2*outOfWindow.first);
     dest.y +=  (direction.second*s_speed - 2*outOfWindow.second);
     direction = newDirection;
-
 }
 
 
-double Person::calcSquareDistance(std::shared_ptr<Person> other){
+double Person::calcSquareDistance(std::shared_ptr<Person> other) {
     auto otherPos = other->getPosition();
     double x = otherPos.first - dest.x;
     double y = otherPos.second - dest.y;
@@ -64,7 +63,7 @@ double Person::calcSquareDistance(std::shared_ptr<Person> other){
 bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
-        if(calcSquareDistance(iPerson)<s_virus->radius){
+        if(calcSquareDistance(iPerson)<s_virus->squareRadius){
             if(++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps){
                 healthState = HealthState::INFECTED;
                 //map can be cleared since this person is now infected
@@ -98,8 +97,8 @@ std::pair<double, double> Person::getPosition() {
 }
 
 
+// Need to define static variables before assignment within Model.cpp
 Box* Person::p_box;
 Virus* Person::s_virus;
 double Person::s_speed;
 double Person::s_size;
-
