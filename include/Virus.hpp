@@ -8,4 +8,4 @@ struct Virus{
     unsigned int criticalNrTimeSteps;
 };
 
-#endif //FFP_TUM_VIRUS_H
+#endif
