@@ -10,7 +10,7 @@ GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height
     win = SDL_CreateWindow("SIR-MODEL", // creates a window
                                        SDL_WINDOWPOS_CENTERED,
                                        SDL_WINDOWPOS_CENTERED,
-                                       width, height, 0);
+                                       1000, 600, 0);
 
     // triggers the program that controls
     // your graphics hardware and sets flags
@@ -52,9 +52,10 @@ void GUI::drawBox(int w, int h) {
     box.y = 50;
     box.w = w;
     box.h = h;
+    box_rect = &box;
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawRect(renderer, &box);
+    SDL_RenderDrawRect(renderer, box_rect);
 }
 
 void GUI::renderPeople() {
@@ -68,7 +69,6 @@ void GUI::renderPeople() {
 
     for (auto &person: model.recovered)
         SDL_RenderCopy(renderer, recovered_tex, nullptr, &(person->dest));
-
     SDL_RenderPresent(renderer);
 }
 

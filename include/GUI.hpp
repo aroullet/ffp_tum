@@ -13,6 +13,7 @@ private:
     SDL_Texture* person_tex = nullptr;
     SDL_Texture* infected_tex = nullptr;
     SDL_Texture* recovered_tex = nullptr;
+    SDL_Rect* box_rect = nullptr;
     Model model;
 
     void drawBox(int, int);

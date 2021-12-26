@@ -6,8 +6,8 @@ Person::Person(HealthState state) {
         healthState = state;
         dest.h = s_size/2;
         dest.w = s_size/2;
-        dest.x = (1.0 * rand()*p_box->x)/RAND_MAX;
-        dest.y = (1.0 * rand()*p_box->y)/RAND_MAX;
+        dest.x = p_box->x0+(1.0 * rand()*p_box->x)/RAND_MAX;
+        dest.y = p_box->y0+(1.0 * rand()*p_box->y)/RAND_MAX;
         double xCoord= (1.0 * rand()-0.5*RAND_MAX);
         double yCoord= (1.0 * rand()-0.5*RAND_MAX);
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
@@ -32,20 +32,20 @@ void Person::updatePosition() {
      */
     std::pair<double, double> outOfWindow{0,0};
     std::pair<double, double> newDirection = direction;
-    if(dest.x + direction.first*s_speed+dest.w>p_box->x){
-        outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - p_box->x;
+    if(dest.x + direction.first*s_speed+dest.w>p_box->x + p_box->x0){
+        outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - p_box->x - p_box->x0;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*s_speed+dest.h>p_box->y){
-        outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - p_box->y;
+    if(dest.y + direction.second*s_speed+dest.h>p_box->y + p_box->y0){
+        outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - p_box->y - p_box->y0;
         newDirection.second = -this->direction.second;
     }
-    if(dest.x + direction.first*s_speed<0){
-        outOfWindow.first = (dest.x + direction.first*s_speed);
+    if(dest.x + direction.first*s_speed<p_box->x0){
+        outOfWindow.first = (dest.x + direction.first*s_speed) - p_box->x0;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*s_speed<0){
-        outOfWindow.second = (dest.y + direction.second*s_speed);
+    if(dest.y + direction.second*s_speed<p_box->y0){
+        outOfWindow.second = (dest.y + direction.second*s_speed) - p_box->y0;
         newDirection.second = -this->direction.second;
     }
     dest.x += (direction.first*s_speed - 2*outOfWindow.first);
@@ -60,6 +60,7 @@ double Person::calcSquareDistance(std::shared_ptr<Person> other) {
     double y = otherPos.second - dest.y;
     return x*x + y*y;
 }
+
 bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
