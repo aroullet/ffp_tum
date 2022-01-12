@@ -23,7 +23,7 @@ int main() {
     unsigned int nInfected = 0;
     unsigned int width = 500;
     unsigned int height = 500;
-    float spreadProb =0.5;//irrelevant so far
+    float spreadProb =0.01;//irrelevant so far
     float squareRadius = 100;//nearly direct hits
     // Get user input for all variables to initialize model
     std::cout << "Enter total number of people to visualize: ";

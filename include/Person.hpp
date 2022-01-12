@@ -24,6 +24,7 @@ public:
     static Virus* s_virus;
     static double s_speed;
     static double s_size;
+    static std::vector<Person*> s_infected_people;
 
     /**
      * Local, private, non-static Attributes:
@@ -80,6 +81,12 @@ public:
      * @return - true if this Person recovers based on Virus.recoveryProb
      */
     bool checkRecovery();
+    /**
+     * This method is specified in its subclasses.
+     *
+     * @return - true if the Healthstate of this Person changes
+     */
+    virtual bool checkHealthState(){return true;};//=0
 
     std::pair<double, double> getPosition();
 };

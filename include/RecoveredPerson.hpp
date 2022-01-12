@@ -8,7 +8,9 @@
 
 
 class RecoveredPerson : Person{
-
+    RecoveredPerson();
+    RecoveredPerson(int personID);
+    bool checkHealthState() override;
 };
 
 

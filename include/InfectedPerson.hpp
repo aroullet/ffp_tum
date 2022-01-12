@@ -8,7 +8,10 @@
 
 
 class InfectedPerson : Person {
-
+public:
+    InfectedPerson();
+    InfectedPerson(Person &person);
+    bool checkHealthState() override;
 };
 
 

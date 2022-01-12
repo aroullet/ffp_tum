@@ -8,7 +8,10 @@
 
 
 class SusceptiblePerson : Person{
-
+public:
+    SusceptiblePerson();
+    SusceptiblePerson(Person &person);
+    bool checkHealthState() override;
 };
 
 

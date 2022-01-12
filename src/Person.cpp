@@ -64,14 +64,18 @@ double Person::calcSquareDistance(std::shared_ptr<Person> other) {
 bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
-        if(calcSquareDistance(iPerson)<s_virus->squareRadius){
-            if(++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps){
-                healthState = HealthState::INFECTED;
-                //map can be cleared since this person is now infected
-                nrHitsPPerson.clear();
-                return true;
+        if (calcSquareDistance(iPerson) < s_virus->squareRadius) {
+            if (++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps) {
+                if ((1.0 * rand()) / RAND_MAX <= s_virus->spreadProb) {
+                    healthState = HealthState::INFECTED;
+                    //map can be cleared since this person is now infected
+                    nrHitsPPerson.clear();
+                    return true;
+                } else {
+                    nrHitsPPerson[iPerson] = 0;
+                }
             }
-        }else{
+        }else {
             nrHitsPPerson[iPerson] = 0;
         }
     }
@@ -80,17 +84,16 @@ bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople
 
 bool Person::checkRecovery() {
     // Found online, but there might be a better way.
-    std::random_device rd;
-    std::default_random_engine eng(rd());
-    std::uniform_real_distribution<float> distr(0, 1);
+    //std::random_device rd;
+    //std::default_random_engine eng(rd());
+    //std::uniform_real_distribution<float> distr(0, 1);
+    //float randomNumber = distr(eng);
 
-    float randomNumber = distr(eng);
-    if (randomNumber < s_virus->recoveryProb) {
+    if ((1.0*rand())/RAND_MAX <= s_virus->recoveryProb) {
         healthState = HealthState::RECOVERED;
         return true;
     }
     return false;
-
 }
 
 std::pair<double, double> Person::getPosition() {
