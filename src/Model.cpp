@@ -12,7 +12,7 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
 
     // Important, these have to be initialized before the people vector
     Person::s_size = 30;
-    Person::p_box = &box;
+    Person::sp_box = &box;
     Person::s_speed = 10;
     Person::s_virus = &virus;//new Virus{0.5, 10.0, 2.0, 1}
 

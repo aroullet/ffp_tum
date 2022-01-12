@@ -2,18 +2,19 @@
 #include <random>
 
 Person::Person(HealthState state) {
-    if(p_box){
+    if(sp_box){
         healthState = state;
         dest.h = s_size/2;
         dest.w = s_size/2;
-        dest.x = p_box->x0+(1.0 * rand()*p_box->x)/RAND_MAX;
-        dest.y = p_box->y0+(1.0 * rand()*p_box->y)/RAND_MAX;
+        dest.x = sp_box->x0+(1.0 * rand()*sp_box->x)/RAND_MAX;
+        dest.y = sp_box->y0+(1.0 * rand()*sp_box->y)/RAND_MAX;
+
         double xCoord= (1.0 * rand()-0.5*RAND_MAX);
         double yCoord= (1.0 * rand()-0.5*RAND_MAX);
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
         this->direction = std::pair(xCoord/length, yCoord/length);
     }else{
-        std::cout << "The People don't know where to go!" << std::endl;
+        std::cerr << "The People don't know where to go!" << std::endl;
         exit(1);
     }
 };
@@ -32,20 +33,21 @@ void Person::updatePosition() {
      */
     std::pair<double, double> outOfWindow{0,0};
     std::pair<double, double> newDirection = direction;
-    if(dest.x + direction.first*s_speed+dest.w>p_box->x + p_box->x0){
-        outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - p_box->x - p_box->x0;
+
+    if(dest.x + direction.first*s_speed+dest.w>sp_box->x + sp_box->x0){
+        outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - sp_box->x - sp_box->x0;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*s_speed+dest.h>p_box->y + p_box->y0){
-        outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - p_box->y - p_box->y0;
+    if(dest.y + direction.second*s_speed+dest.h>sp_box->y + sp_box->y0){
+        outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - sp_box->y - sp_box->y0;
         newDirection.second = -this->direction.second;
     }
-    if(dest.x + direction.first*s_speed<p_box->x0){
-        outOfWindow.first = (dest.x + direction.first*s_speed) - p_box->x0;
+    if(dest.x + direction.first*s_speed<sp_box->x0){
+        outOfWindow.first = (dest.x + direction.first*s_speed) - sp_box->x0;
         newDirection.first = -this->direction.first;
     }
-    if(dest.y + direction.second*s_speed<p_box->y0){
-        outOfWindow.second = (dest.y + direction.second*s_speed) - p_box->y0;
+    if(dest.y + direction.second*s_speed<sp_box->y0){
+        outOfWindow.second = (dest.y + direction.second*s_speed) - sp_box->y0;
         newDirection.second = -this->direction.second;
     }
     dest.x += (direction.first*s_speed - 2*outOfWindow.first);
@@ -102,7 +104,7 @@ std::pair<double, double> Person::getPosition() {
 
 
 // Need to define static variables before assignment within Model.cpp
-Box* Person::p_box;
+Box* Person::sp_box;
 Virus* Person::s_virus;
 double Person::s_speed;
 double Person::s_size;
