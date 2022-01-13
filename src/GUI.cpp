@@ -5,12 +5,12 @@
 GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius) : model(N,iN, width, height, prob, radius) {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        printf("error initializing SDL: %s\n", SDL_GetError());
+        std::cout << "error initializing SDL: %s\n" << SDL_GetError();
     }
     win = SDL_CreateWindow("SIR-MODEL", // creates a windows
-                                       SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED,
-                                       1000, 600, 0);
+                           SDL_WINDOWPOS_CENTERED,
+                           SDL_WINDOWPOS_CENTERED,
+                           1000, 600, 0);
 
     // triggers the program that controls
     // your graphics hardware and sets flags

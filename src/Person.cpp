@@ -104,7 +104,7 @@ std::pair<double, double> Person::getPosition() {
 
 
 // Need to define static variables before assignment within Model.cpp
-Box* Person::sp_box;
-Virus* Person::s_virus;
+std::shared_ptr<Box> Person::sp_box;
+std::shared_ptr<Virus> Person::s_virus;
 double Person::s_speed;
 double Person::s_size;

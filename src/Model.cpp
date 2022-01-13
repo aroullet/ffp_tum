@@ -12,9 +12,9 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
 
     // Important, these have to be initialized before the people vector
     Person::s_size = 30;
-    Person::sp_box = &box;
+    Person::sp_box = std::make_shared<Box>(box);
     Person::s_speed = 10;
-    Person::s_virus = &virus;//new Virus{0.5, 10.0, 2.0, 1}
+    Person::s_virus = std::make_shared<Virus>(virus);//new Virus{0.5, 10.0, 2.0, 1}
 
     people = std::vector<std::shared_ptr<Person>>(N-iN);
     for (unsigned int i = 0; i < N-iN; i++ ){

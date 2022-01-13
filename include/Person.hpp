@@ -20,8 +20,8 @@ public:
      * @param speed - The speed people move.
      * @param size - Double the size of a person in the gui.
      */
-    static Box* sp_box;
-    static Virus* s_virus;
+    static std::shared_ptr<Box> sp_box;
+    static std::shared_ptr<Virus> s_virus;
     static double s_speed;
     static double s_size;
     static std::vector<Person*> s_infected_people;
