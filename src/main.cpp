@@ -4,9 +4,6 @@
 #include "GUI.hpp"
 #include "main.hpp"
 
-void clearInputBuffer() {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-};
 
 int main() {
 
@@ -30,18 +27,22 @@ int main() {
     unsigned int width = 500;
     unsigned int height = 500;
     float spreadProb =0.01;//irrelevant so far
-    float squareRadius = 100;//nearly direct hits
+    float radius = 10;//nearly direct hits
 
     // Get user input for all variables to initialize model
-    const std::string nPeopleMessage = "Enter total number of people to visualize: ";
-    getUserInput(nPeople, nPeopleMessage);
-    const std::string nInfectedMessage = "Enter the number of infected people: ";
-    getUserInput(nInfected, nInfectedMessage);
+    const std::string nPeopleMsg = "Enter total number of people to visualize: ";
+    getUserInput<unsigned int>(nPeople, nPeopleMsg);
+    const std::string nInfectedMsg = "Enter the number of infected people: ";
+    getUserInput<unsigned int>(nInfected, nInfectedMsg);
 
     while(nInfected>nPeople){
         std::cout << "Number of infected people must be smaller than total number of "<<nPeople<<"! Please enter valid number: ";
-        getUserInput(nInfected, "");
+        getUserInput<unsigned int>(nInfected, "");
     }
+
+    const std::string radiusMsg = "Please specify the infection radius (in pixels): ";
+    getUserInput<float>(radius, radiusMsg);
+    float squareRadius = pow(radius, 2);
 
     GUI gui(nPeople, nInfected, width, height, spreadProb, squareRadius);
     gui.run();
@@ -53,19 +54,4 @@ int main() {
     }
 
     return 0;
-}
-
-void getUserInput(unsigned int& value, const std::string& promptMsg) {
-    while (true) {
-        std::cout << promptMsg;
-        std::cin >> value;
-        if (std::cin.fail()) {
-            std::cin.clear();  // reset out of failure mode (also covers over-/underflows)
-            clearInputBuffer(); // remove incorrect input
-            std::cout << "Invalid value specified.\n";
-        } else {
-            clearInputBuffer();
-            break;
-        }
-    }
 }
