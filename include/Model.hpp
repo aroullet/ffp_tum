@@ -32,7 +32,7 @@ private:
     /**
      * Updates position of everyone regardless of their HealthState.
      */
-    void movePeople(std::vector<std::shared_ptr<Person>>);
+    void movePeople(const std::vector<std::shared_ptr<Person>>&);
 
     /**
      * Runs the infection checks for all susceptible people and checks recovery

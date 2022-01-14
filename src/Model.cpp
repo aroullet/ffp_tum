@@ -26,8 +26,8 @@ Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int he
     }
 }
 
-void Model::movePeople(std::vector<std::shared_ptr<Person>> peopleVector) {
-    for (auto person : peopleVector)
+void Model::movePeople(const std::vector<std::shared_ptr<Person>>& peopleVector) {
+    for (const auto& person : peopleVector)
         person->updatePosition();
 }
 
