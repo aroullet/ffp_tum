@@ -51,7 +51,7 @@ The first simple SRI model will be implemented/finished. Additional variants wil
 
 
 ### Definition of "done"
-- The simple SRI model works and outputs the satus of each person (see Sprint 1)
+- The simple SRI model works and outputs the status of each person (see Sprint 1)
 - The output is saved into a file which name the user can choose
 - At least two modified versions of the SIR are implemented
 
