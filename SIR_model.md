@@ -66,10 +66,3 @@ In this sprint, the code performance will be evaluated and improved. Potential p
 
 SDL Tutorial:
 https://www.geeksforgeeks.org/sdl-library-in-c-c-with-examples/
-
-Brainstorm:
-
-HealthState map with file paths to the correct pictures in Module.
-Make speed of Person class static variable shared between objects.
-Infect as a method of Person --> How do they change from one vector to the other?
-Possible solution: Pass pointers to both vectors as static attributes with setter for Model after initializing vectors.
