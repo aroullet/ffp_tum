@@ -8,12 +8,12 @@
 
 class GUI {
 private:
-    SDL_Window* win = nullptr;
-    SDL_Renderer* renderer = nullptr;
-    SDL_Texture* person_tex = nullptr;
-    SDL_Texture* infected_tex = nullptr;
-    SDL_Texture* recovered_tex = nullptr;
-    SDL_Rect* box_rect = nullptr;
+    SDL_Window* win;
+    SDL_Renderer* renderer;
+    SDL_Texture* person_tex;
+    SDL_Texture* infected_tex;
+    SDL_Texture* recovered_tex;
+    SDL_Rect* box_rect;
     Model model;
 
     void drawBox(int, int);
