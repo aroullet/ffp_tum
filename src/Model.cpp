@@ -18,12 +18,12 @@ Model::Model(unsigned N, unsigned iN,unsigned width, unsigned height, float prob
     Person::s_virus = std::make_shared<Virus>(virus);//new Virus{0.5, 10.0, 2.0, 1}
 
     people = std::vector<std::shared_ptr<Person>>(N-iN);
-    for (unsigned int i = 0; i < N-iN; i++ ){
-        people[i] = std::make_shared<Person>();
+    for (auto& p: people) {
+        p = std::make_shared<Person>();
     }
     infected = std::vector<std::shared_ptr<Person>>(iN);
-    for (unsigned int i = 0; i < iN; i++ ){
-        infected[i] = std::make_shared<Person>(HealthState::INFECTED);
+    for (auto& p : infected){
+        p = std::make_shared<Person>(HealthState::INFECTED);
     }
 }
 
