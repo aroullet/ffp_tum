@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "randomGenerator.hpp"
 
-constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
+constexpr float DEFAULT_RECOVERY_PROB = 0.002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
 
 constexpr double DEFAULT_SPEED = 10;
@@ -33,6 +33,32 @@ void Model::movePeople(const std::vector<std::shared_ptr<Person>>& peopleVector)
         person->updatePosition();
 }
 
+//helping methodsfor update state which we only declare here, since they should not be used by other classes
+void updateModelArray(std::vector<std::shared_ptr<Person>> &newlyChangedP, std::vector<int> &positionNewlyChangedP, std::vector<std::shared_ptr<Person>> &people1, std::vector<std::shared_ptr<Person>> &people2){
+    unsigned int numberNewlyChangedP = positionNewlyChangedP.size();
+    for(unsigned i = 1; i <= numberNewlyChangedP; i++){
+        people1.push_back(newlyChangedP[numberNewlyChangedP-i]);
+        people2.erase(people2.begin()+positionNewlyChangedP[numberNewlyChangedP-i]);
+    }
+}
+//helping methodsfor update state which we only declare here, since they should not be used by other classes
+void checkModelArrayUpdates(std::vector<std::shared_ptr<Person>> &newlyChangedP, std::vector<int> &positionNewlyChangedP, std::vector<std::shared_ptr<Person>> &people, std::vector<std::shared_ptr<Person>> *infected=0){
+    bool state_changed;
+    for (long unsigned i = 0; i < people.size(); i++) {
+        if (people[i]->healthState == HealthState::SUSCEPTIBLE && infected) {
+            state_changed = people[i]->checkInfection(*infected);
+        }else if(people[i]->healthState == HealthState::RECOVERED){
+            state_changed = people[i]->checkImmunity();
+        }else{
+            state_changed = people[i]->checkRecovery();
+        }
+        if(state_changed){
+            newlyChangedP.push_back(people[i]);
+            positionNewlyChangedP.push_back(i);
+        }
+    }
+}
+
 void Model::updateState() {
 
     // New method to keep the code DRY
@@ -40,58 +66,22 @@ void Model::updateState() {
     movePeople(infected);
     movePeople(recovered);
 
-    // The next few blocks have a lot of repetition, need to wrap it up in a nice function that takes a callback function as argument.
     std::vector<std::shared_ptr<Person>> newlyInfected;
     std::vector<int> positionNewlyInfected;
-    for (long unsigned i = 0; i < people.size(); i++) {
-        bool state_changed = people[i]->checkInfection(infected);
-        if (state_changed) {
-            newlyInfected.push_back(people[i]);
-            positionNewlyInfected.push_back(i);
-        }
-    }
+    checkModelArrayUpdates(newlyInfected, positionNewlyInfected, people, &infected);
+
     // Doing it here since people who just got infected should not have the chance to immediately recover
     std::vector<std::shared_ptr<Person>> newlyRecovered;
     std::vector<int> positionNewlyRecovered;
-    for (long unsigned i = 0; i < infected.size(); i++) {
-        bool state_changed = infected[i]->checkRecovery();
-        infected[i]->latency?infected[i]->latency--:0;
-        if(state_changed){
-            newlyRecovered.push_back(infected[i]);
-            positionNewlyRecovered.push_back(i);
-        }
-    }
+    checkModelArrayUpdates(newlyRecovered, positionNewlyRecovered, infected);
+    
     std::vector<std::shared_ptr<Person>> newlySusceptible;
     std::vector<int> positionNewlySusceptible;
-    for (long unsigned i = 0; i < recovered.size(); i++) {
-        if(recovered[i]->immunity){
-            recovered[i]->immunity--;
-            std::cout << recovered[i]->immunity<<std::endl;
-        }else{
-            newlySusceptible.push_back(infected[i]);
-            positionNewlySusceptible.push_back(i);
-        }
-    }
-    unsigned int numberNewlyInfected = positionNewlyInfected.size();
-    for(unsigned i = 1; i <= numberNewlyInfected; i++){
-        infected.push_back(newlyInfected[numberNewlyInfected-i]);
-        people.erase(people.begin()+positionNewlyInfected[numberNewlyInfected-i]);
-    }
+    checkModelArrayUpdates(newlySusceptible, positionNewlySusceptible, recovered);
 
-    unsigned int numberNewlyRecovered = positionNewlyRecovered.size();
-    for(unsigned j = 1; j <= numberNewlyRecovered; j++){
-        recovered.push_back(newlyRecovered[numberNewlyRecovered-j]);
-        infected.erase(infected.begin()+positionNewlyRecovered[numberNewlyRecovered-j]);
-    }
-    unsigned int numberNewlySusceptible = positionNewlySusceptible.size();
-    for(unsigned j = 1; j <= numberNewlySusceptible; j++){
-        newlySusceptible[numberNewlySusceptible-j]->healthState=HealthState::SUSCEPTIBLE;
-        newlySusceptible[numberNewlySusceptible-j]->latency = generateRandom(100, 1000);
-        newlySusceptible[numberNewlySusceptible-j]->immunity = generateRandom(100, 1000);
-        people.push_back(newlySusceptible[numberNewlySusceptible-j]);
-        recovered.erase(recovered.begin()+positionNewlySusceptible[numberNewlySusceptible-j]);
-        std::cout<<"back to susceptible"<<std::endl;
-    }
+    updateModelArray(newlyInfected, positionNewlyInfected, infected, people);
+    updateModelArray(newlyRecovered, positionNewlyRecovered, recovered, infected);
+    updateModelArray(newlySusceptible, positionNewlySusceptible, people, recovered);
 
     positionNewlyInfected.clear();
     newlyInfected.clear();

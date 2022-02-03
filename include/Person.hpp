@@ -87,6 +87,14 @@ struct Person {
      */
     bool checkRecovery();
     /**
+     * This iterates over the given set of infected people. Compares their distance
+     * with this given Person and increases the map value if a specific person from this
+     * set is too close according to the virus.
+     *
+     * @return - true if this Person is again susceptible based on immunity
+     */
+    bool checkImmunity();
+    /**
      * This method is specified in its subclasses.
      *
      * @return - true if the Healthstate of this Person changes

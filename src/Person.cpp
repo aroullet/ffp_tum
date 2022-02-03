@@ -1,6 +1,9 @@
 #include "Person.hpp"
 #include "randomGenerator.hpp"
 
+constexpr double DEFAULT_MINIMUM_STATEENDURANCE = 10;
+constexpr double DEFAULT_MAXIMM_STATEENDURANCE = 100;
+
 Person::Person(HealthState state) {
     if(sp_box){
         healthState = state;
@@ -8,8 +11,9 @@ Person::Person(HealthState state) {
         dest.w = s_size/2;
         dest.x = generateRandom(sp_box->x0, sp_box->x0+sp_box->x);
         dest.y = generateRandom(sp_box->y0, sp_box->y0+sp_box->y);
-        latency = generateRandom(100, 1000);
-        immunity = generateRandom(0, 10);
+        //those values worked best for us but should be changed to variables which can be set
+        latency = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
+        immunity = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
 
         double xCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
         double yCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
@@ -67,8 +71,8 @@ double Person::calcSquareDistance(std::shared_ptr<Person> other) const {
 
 bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
     for(auto iPerson: infectedPeople){
-        //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
         if (calcSquareDistance(iPerson) < s_virus->squareRadius) {
+            //latency to endure non infectious state
             if (++nrHitsPPerson[iPerson]-iPerson->latency >= s_virus->criticalNrTimeSteps) {
                 if (generateRandom() <= s_virus->spreadProb) {
                     healthState = HealthState::INFECTED;
@@ -93,11 +97,22 @@ bool Person::checkRecovery() {
     //std::uniform_real_distribution<float> distr(0, 1);
     //float randomNumber = distr(eng);
 
+    //decrease time of a non-infectious state
+    latency?latency--:0;
     if (generateRandom()<= s_virus->recoveryProb) {
         healthState = HealthState::RECOVERED;
         return true;
     }
     return false;
+}
+bool Person::checkImmunity(){
+    //decrease time of the recoered state
+    immunity--;
+    //reset those attributes for a new iteration as susceptible person
+    healthState=HealthState::SUSCEPTIBLE;
+    latency = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
+    immunity = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
+    return immunity==0;
 }
 
 Coordinate2D Person::getPosition() const {
