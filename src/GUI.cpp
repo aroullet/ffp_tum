@@ -2,7 +2,8 @@
 #include <iostream>
 #include "Person.hpp"
 
-GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius) : model(N,iN, width, height, prob, radius) {
+GUI::GUI(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius)
+    : model{N,iN, width, height, prob, radius} {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "error initializing SDL: %s\n" << SDL_GetError();

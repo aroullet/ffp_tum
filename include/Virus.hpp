@@ -5,7 +5,7 @@ struct Virus{
     float spreadProb;
     float squareRadius;
     float recoveryProb;
-    unsigned int criticalNrTimeSteps;
+    unsigned criticalNrTimeSteps;
 };
 
 #endif

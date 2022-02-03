@@ -41,7 +41,7 @@ private:
     void updateState();
 
 public:
-    Model(unsigned int N, unsigned int iN, unsigned int width, unsigned int height, float prob, float radius);
+    Model(unsigned N, unsigned iN, unsigned width, unsigned height, float prob, float radius);
     friend class GUI;
 };
 

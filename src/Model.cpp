@@ -2,18 +2,19 @@
 #include "Virus.hpp"
 #include <algorithm>
 
-Model::Model(unsigned int N, unsigned int iN,unsigned int width, unsigned int height, float prob, float radius) {
-    box.x = width;
-    box.y = height;
-    virus.spreadProb = prob;
-    virus.squareRadius = radius; //radius and hits are the only thing that matter do far
-    virus.criticalNrTimeSteps = 1; // just hitting it once
-    virus.recoveryProb = 0.002; // 0.2% chance to recover at each time step
+constexpr float DEFAULT_RECOVERY_PROB = 0.002;
+constexpr unsigned CRITICAL_TIME_STEPS = 1;
+
+constexpr double DEFAULT_SPEED = 10;
+constexpr double DEFAULT_SIZE = 30;
+
+Model::Model(unsigned N, unsigned iN,unsigned width, unsigned height, float prob, float radius)
+    : virus{prob, radius, DEFAULT_RECOVERY_PROB, CRITICAL_TIME_STEPS}, box{width, height} {
 
     // Important, these have to be initialized before the people vector
-    Person::s_size = 30;
+    Person::s_size = DEFAULT_SIZE;
     Person::sp_box = std::make_shared<Box>(box);
-    Person::s_speed = 10;
+    Person::s_speed = DEFAULT_SPEED;
     Person::s_virus = std::make_shared<Virus>(virus);//new Virus{0.5, 10.0, 2.0, 1}
 
     people = std::vector<std::shared_ptr<Person>>(N-iN);

@@ -1,5 +1,5 @@
-#ifndef FFP_TUM_MAIN_HPP
-#define FFP_TUM_MAIN_HPP
+#ifndef FFP_TUM_INPUTHANDLER_HPP
+#define FFP_TUM_INPUTHANDLER_HPP
 
 #include <string>
 
@@ -22,4 +22,4 @@ void getUserInput(T& value, const std::string& promptMsg) {
         }
     }
 }
-#endif //FFP_TUM_MAIN_HPP
+#endif //FFP_TUM_INPUTHANDLER_HPP

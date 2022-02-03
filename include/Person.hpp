@@ -11,8 +11,7 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
-class Person {
-public:
+struct Person {
     /**
      * Static Attributes:
      * @param box - Given Box for the people wandering around
@@ -46,8 +45,7 @@ public:
      * @param other - another Person to which we calculate the euclidean distance
      * @return - the squared distance
      */
-    double calcSquareDistance(std::shared_ptr<Person> other);
-public:
+    double calcSquareDistance(std::shared_ptr<Person> other) const;
 
     /**
      * It is assumed that the static values are already initialized otherwise an error s thrown.
@@ -86,9 +84,8 @@ public:
      *
      * @return - true if the Healthstate of this Person changes
      */
-    virtual bool checkHealthState(){return true;};//=0
 
-    std::pair<double, double> getPosition();
+    std::pair<double, double> getPosition() const;
 };
 
 
