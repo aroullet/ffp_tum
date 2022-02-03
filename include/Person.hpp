@@ -11,6 +11,11 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+struct Coordinate2D{
+    double x;
+    double y;
+};
+
 struct Person {
     /**
      * Static Attributes:
@@ -33,7 +38,7 @@ struct Person {
      * @param dest - the object for the
      */
     HealthState healthState;
-    std::pair<double, double> direction;
+    Coordinate2D direction;
     std::unordered_map<std::shared_ptr<Person>, unsigned int> nrHitsPPerson;
     SDL_Rect dest;
     /**
@@ -52,7 +57,7 @@ struct Person {
      * The SDLRect is set to a position randomly in the given box with the given size of the
      * person's picture. And a randomized normalized direction vector is set.
      */
-    explicit Person(HealthState state=HealthState::SUSCEPTIBLE);
+    Person(HealthState state=HealthState::SUSCEPTIBLE);
 
     /**
      * This updates the position of this Person for one timestep according to the given direction.
@@ -85,7 +90,7 @@ struct Person {
      * @return - true if the Healthstate of this Person changes
      */
 
-    std::pair<double, double> getPosition() const;
+    Coordinate2D getPosition() const;
 };
 
 
