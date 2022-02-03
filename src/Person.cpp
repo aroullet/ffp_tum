@@ -56,7 +56,7 @@ void Person::updatePosition() {
 }
 
 
-double Person::calcSquareDistance(std::shared_ptr<Person> other) {
+double Person::calcSquareDistance(std::shared_ptr<Person> other) const {
     auto otherPos = other->getPosition();
     double x = otherPos.first - dest.x;
     double y = otherPos.second - dest.y;
@@ -98,8 +98,8 @@ bool Person::checkRecovery() {
     return false;
 }
 
-std::pair<double, double> Person::getPosition() {
-    return std::pair<double, double>(dest.x, dest.y);
+std::pair<double, double> Person::getPosition() const {
+    return {dest.x, dest.y};
 }
 
 

@@ -32,7 +32,7 @@ private:
     /**
      * Updates position of everyone regardless of their HealthState.
      */
-    void movePeople(const std::vector<std::shared_ptr<Person>>&);
+    static void movePeople(const std::vector<std::shared_ptr<Person>>&);
 
     /**
      * Runs the infection checks for all susceptible people and checks recovery
@@ -41,7 +41,7 @@ private:
     void updateState();
 
 public:
-    Model(unsigned int N, unsigned int iN, unsigned int width, unsigned int height, float prob, float radius);
+    Model(unsigned N, unsigned iN, unsigned width, unsigned height, float prob, float radius);
     friend class GUI;
 };
 
