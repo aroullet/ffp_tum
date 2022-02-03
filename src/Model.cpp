@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "randomGenerator.hpp"
 
-constexpr float DEFAULT_RECOVERY_PROB = 0.002;
+constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
 
 constexpr double DEFAULT_SPEED = 10;
@@ -74,7 +74,7 @@ void Model::updateState() {
     std::vector<std::shared_ptr<Person>> newlyRecovered;
     std::vector<int> positionNewlyRecovered;
     checkModelArrayUpdates(newlyRecovered, positionNewlyRecovered, infected);
-    
+
     std::vector<std::shared_ptr<Person>> newlySusceptible;
     std::vector<int> positionNewlySusceptible;
     checkModelArrayUpdates(newlySusceptible, positionNewlySusceptible, recovered);
