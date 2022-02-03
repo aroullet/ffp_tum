@@ -12,7 +12,7 @@ Person::Person(HealthState state) {
         double xCoord= (1.0 * rand()-0.5*RAND_MAX);
         double yCoord= (1.0 * rand()-0.5*RAND_MAX);
         double length = sqrt(xCoord*xCoord + yCoord * yCoord);
-        this->direction = std::pair(xCoord/length, yCoord/length);
+        direction = std::pair(xCoord/length, yCoord/length);
     }else{
         std::cerr << "The People don't know where to go!" << std::endl;
         exit(1);
@@ -36,19 +36,19 @@ void Person::updatePosition() {
 
     if(dest.x + direction.first*s_speed+dest.w>sp_box->x + sp_box->x0){
         outOfWindow.first = (dest.x + direction.first*s_speed+dest.w) - sp_box->x - sp_box->x0;
-        newDirection.first = -this->direction.first;
+        newDirection.first = -direction.first;
     }
     if(dest.y + direction.second*s_speed+dest.h>sp_box->y + sp_box->y0){
         outOfWindow.second = (dest.y + direction.second*s_speed+dest.h) - sp_box->y - sp_box->y0;
-        newDirection.second = -this->direction.second;
+        newDirection.second = -direction.second;
     }
     if(dest.x + direction.first*s_speed<sp_box->x0){
         outOfWindow.first = (dest.x + direction.first*s_speed) - sp_box->x0;
-        newDirection.first = -this->direction.first;
+        newDirection.first = -direction.first;
     }
     if(dest.y + direction.second*s_speed<sp_box->y0){
         outOfWindow.second = (dest.y + direction.second*s_speed) - sp_box->y0;
-        newDirection.second = -this->direction.second;
+        newDirection.second = -direction.second;
     }
     dest.x += (direction.first*s_speed - 2*outOfWindow.first);
     dest.y +=  (direction.second*s_speed - 2*outOfWindow.second);
