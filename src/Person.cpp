@@ -8,8 +8,8 @@ Person::Person(HealthState state) {
         dest.w = s_size/2;
         dest.x = generateRandom(sp_box->x0, sp_box->x0+sp_box->x);
         dest.y = generateRandom(sp_box->y0, sp_box->y0+sp_box->y);
-        latency = generateRandom(100, 1000);
-        immunity = generateRandom(0, 10);
+        latency = generateRandom(10, 100);
+        immunity = generateRandom(10, 100);
 
         double xCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
         double yCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);

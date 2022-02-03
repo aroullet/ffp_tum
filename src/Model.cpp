@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "randomGenerator.hpp"
 
-constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
+constexpr float DEFAULT_RECOVERY_PROB = 0.002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
 
 constexpr double DEFAULT_SPEED = 10;
@@ -66,10 +66,12 @@ void Model::updateState() {
     for (long unsigned i = 0; i < recovered.size(); i++) {
         if(recovered[i]->immunity){
             recovered[i]->immunity--;
-            std::cout << recovered[i]->immunity<<std::endl;
         }else{
-            newlySusceptible.push_back(infected[i]);
+            newlySusceptible.push_back(recovered[i]);
             positionNewlySusceptible.push_back(i);
+            recovered[i]->healthState=HealthState::SUSCEPTIBLE;
+            recovered[i]->latency = generateRandom(100, 1000);
+            recovered[i]->immunity = generateRandom(100, 1000);
         }
     }
     unsigned int numberNewlyInfected = positionNewlyInfected.size();
@@ -85,12 +87,8 @@ void Model::updateState() {
     }
     unsigned int numberNewlySusceptible = positionNewlySusceptible.size();
     for(unsigned j = 1; j <= numberNewlySusceptible; j++){
-        newlySusceptible[numberNewlySusceptible-j]->healthState=HealthState::SUSCEPTIBLE;
-        newlySusceptible[numberNewlySusceptible-j]->latency = generateRandom(100, 1000);
-        newlySusceptible[numberNewlySusceptible-j]->immunity = generateRandom(100, 1000);
         people.push_back(newlySusceptible[numberNewlySusceptible-j]);
         recovered.erase(recovered.begin()+positionNewlySusceptible[numberNewlySusceptible-j]);
-        std::cout<<"back to susceptible"<<std::endl;
     }
 
     positionNewlyInfected.clear();
