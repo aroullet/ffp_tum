@@ -13,6 +13,7 @@ Person::Person(HealthState state) {
         dest.w = s_size/2;
         dest.x = generateRandom(sp_box->x0, sp_box->x0+sp_box->x);
         dest.y = generateRandom(sp_box->y0, sp_box->y0+sp_box->y);
+        latency = generateRandom(0, RAND_MAX/10);
 
         double xCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
         double yCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
@@ -72,7 +73,7 @@ bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople
     for(auto iPerson: infectedPeople){
         //std::cout << calcDistance(iPerson) << ":" << s_virus->radius << std::endl;
         if (calcSquareDistance(iPerson) < s_virus->squareRadius) {
-            if (++nrHitsPPerson[iPerson] >= s_virus->criticalNrTimeSteps) {
+            if (++nrHitsPPerson[iPerson]-iPerson->latency >= s_virus->criticalNrTimeSteps) {
                 if (generateRandom() <= s_virus->spreadProb) {
                     healthState = HealthState::INFECTED;
                     //map can be cleared since this person is now infected

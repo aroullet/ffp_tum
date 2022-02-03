@@ -41,6 +41,7 @@ struct Person {
     Coordinate2D direction;
     std::unordered_map<std::shared_ptr<Person>, unsigned int> nrHitsPPerson;
     SDL_Rect dest;
+    int latency;
     /**
      * This function should be private since we do not need to calculate the distance
      * outside of this class.

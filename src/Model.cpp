@@ -2,7 +2,7 @@
 #include "Virus.hpp"
 #include <algorithm>
 
-constexpr float DEFAULT_RECOVERY_PROB = 0.002;
+constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
 
 constexpr double DEFAULT_SPEED = 10;
@@ -54,6 +54,7 @@ void Model::updateState() {
     std::vector<int> positionNewlyRecovered;
     for (long unsigned int i = 0; i < infected.size(); i++) {
         bool state_changed = infected[i]->checkRecovery();
+        infected[i]->latency?infected[i]->latency--:0;
         if(state_changed){
             newlyRecovered.push_back(infected[i]);
             positionNewlyRecovered.push_back(i);

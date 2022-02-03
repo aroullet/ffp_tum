@@ -26,7 +26,7 @@ int main() {
     unsigned nInfected = 0;
     unsigned width = 500;
     unsigned height = 500;
-    float spreadProb =0.01;//irrelevant so far
+    float spreadProb =0.01;
     float radius = 10;//nearly direct hits
 
     // Get user input for all variables to initialize model
