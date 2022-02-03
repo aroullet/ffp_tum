@@ -6,6 +6,7 @@
 #include "Box.hpp"
 #include "Person.hpp"
 
+
 /*
  * Explanation of the model's dynamics:
  * Beta is the average of number of contacts per person per unit of time

@@ -1,6 +1,7 @@
 #include "Model.hpp"
 #include "Virus.hpp"
 #include <algorithm>
+#include "randomGenerator.hpp"
 
 constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
@@ -42,7 +43,7 @@ void Model::updateState() {
     // The next few blocks have a lot of repetition, need to wrap it up in a nice function that takes a callback function as argument.
     std::vector<std::shared_ptr<Person>> newlyInfected;
     std::vector<int> positionNewlyInfected;
-    for (long unsigned int i = 0; i < people.size(); i++) {
+    for (long unsigned i = 0; i < people.size(); i++) {
         bool state_changed = people[i]->checkInfection(infected);
         if (state_changed) {
             newlyInfected.push_back(people[i]);
@@ -52,7 +53,7 @@ void Model::updateState() {
     // Doing it here since people who just got infected should not have the chance to immediately recover
     std::vector<std::shared_ptr<Person>> newlyRecovered;
     std::vector<int> positionNewlyRecovered;
-    for (long unsigned int i = 0; i < infected.size(); i++) {
+    for (long unsigned i = 0; i < infected.size(); i++) {
         bool state_changed = infected[i]->checkRecovery();
         infected[i]->latency?infected[i]->latency--:0;
         if(state_changed){
@@ -60,16 +61,36 @@ void Model::updateState() {
             positionNewlyRecovered.push_back(i);
         }
     }
+    std::vector<std::shared_ptr<Person>> newlySusceptible;
+    std::vector<int> positionNewlySusceptible;
+    for (long unsigned i = 0; i < recovered.size(); i++) {
+        if(recovered[i]->immunity){
+            recovered[i]->immunity--;
+            std::cout << recovered[i]->immunity<<std::endl;
+        }else{
+            newlySusceptible.push_back(infected[i]);
+            positionNewlySusceptible.push_back(i);
+        }
+    }
     unsigned int numberNewlyInfected = positionNewlyInfected.size();
-    for(unsigned int i = 1; i <= numberNewlyInfected; i++){
+    for(unsigned i = 1; i <= numberNewlyInfected; i++){
         infected.push_back(newlyInfected[numberNewlyInfected-i]);
         people.erase(people.begin()+positionNewlyInfected[numberNewlyInfected-i]);
     }
 
     unsigned int numberNewlyRecovered = positionNewlyRecovered.size();
-    for(unsigned int j = 1; j <= numberNewlyRecovered; j++){
+    for(unsigned j = 1; j <= numberNewlyRecovered; j++){
         recovered.push_back(newlyRecovered[numberNewlyRecovered-j]);
         infected.erase(infected.begin()+positionNewlyRecovered[numberNewlyRecovered-j]);
+    }
+    unsigned int numberNewlySusceptible = positionNewlySusceptible.size();
+    for(unsigned j = 1; j <= numberNewlySusceptible; j++){
+        newlySusceptible[numberNewlySusceptible-j]->healthState=HealthState::SUSCEPTIBLE;
+        newlySusceptible[numberNewlySusceptible-j]->latency = generateRandom(100, 1000);
+        newlySusceptible[numberNewlySusceptible-j]->immunity = generateRandom(100, 1000);
+        people.push_back(newlySusceptible[numberNewlySusceptible-j]);
+        recovered.erase(recovered.begin()+positionNewlySusceptible[numberNewlySusceptible-j]);
+        std::cout<<"back to susceptible"<<std::endl;
     }
 
     positionNewlyInfected.clear();
@@ -77,4 +98,7 @@ void Model::updateState() {
 
     positionNewlyRecovered.clear();
     newlyRecovered.clear();
+
+    positionNewlySusceptible.clear();
+    newlySusceptible.clear();
 }

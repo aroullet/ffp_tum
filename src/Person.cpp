@@ -1,10 +1,5 @@
 #include "Person.hpp"
-#include <random>
-
- double generateRandom(int minimum=0, int maximum = 1) {
-    return minimum+(1.0 * rand()/RAND_MAX*(maximum-minimum));
-}
-
+#include "randomGenerator.hpp"
 
 Person::Person(HealthState state) {
     if(sp_box){
@@ -13,7 +8,8 @@ Person::Person(HealthState state) {
         dest.w = s_size/2;
         dest.x = generateRandom(sp_box->x0, sp_box->x0+sp_box->x);
         dest.y = generateRandom(sp_box->y0, sp_box->y0+sp_box->y);
-        latency = generateRandom(0, RAND_MAX/10);
+        latency = generateRandom(100, 1000);
+        immunity = generateRandom(0, 10);
 
         double xCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
         double yCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
