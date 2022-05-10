@@ -1,8 +1,8 @@
 #include "Person.hpp"
 #include "randomGenerator.hpp"
 
-constexpr double DEFAULT_MINIMUM_STATEENDURANCE = 10;
-constexpr double DEFAULT_MAXIMM_STATEENDURANCE = 100;
+constexpr double MIN_STATE_DURATION = 10;
+constexpr double MAX_STATE_DURATION = 100;
 
 Person::Person(HealthState state) {
     if(sp_box){
@@ -12,8 +12,8 @@ Person::Person(HealthState state) {
         dest.x = generateRandom(sp_box->x0, sp_box->x0+sp_box->x);
         dest.y = generateRandom(sp_box->y0, sp_box->y0+sp_box->y);
         //those values worked best for us but should be changed to variables which can be set
-        latency = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
-        immunity = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
+        latency = generateRandom(MIN_STATE_DURATION, MAX_STATE_DURATION);
+        immunity = generateRandom(MIN_STATE_DURATION, MAX_STATE_DURATION);
 
         double xCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
         double yCoord = generateRandom(-0.5*RAND_MAX, 0.5*RAND_MAX);
@@ -69,8 +69,8 @@ double Person::calcSquareDistance(std::shared_ptr<Person> other) const {
     return x*x + y*y;
 }
 
-bool Person::checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople) {
-    for(auto iPerson: infectedPeople){
+bool Person::checkInfection(const std::vector<std::shared_ptr<Person>> &infectedPeople) {
+    for(const auto& iPerson: infectedPeople){
         if (calcSquareDistance(iPerson) < s_virus->squareRadius) {
             //latency to endure non infectious state
             if (++nrHitsPPerson[iPerson]-iPerson->latency >= s_virus->criticalNrTimeSteps) {
@@ -110,8 +110,8 @@ bool Person::checkImmunity(){
     immunity--;
     //reset those attributes for a new iteration as susceptible person
     healthState=HealthState::SUSCEPTIBLE;
-    latency = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
-    immunity = generateRandom(DEFAULT_MINIMUM_STATEENDURANCE, DEFAULT_MAXIMM_STATEENDURANCE);
+    latency = generateRandom(MIN_STATE_DURATION, MAX_STATE_DURATION);
+    immunity = generateRandom(MIN_STATE_DURATION, MAX_STATE_DURATION);
     return immunity==0;
 }
 

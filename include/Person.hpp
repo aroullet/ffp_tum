@@ -77,7 +77,7 @@ struct Person {
      * @param infectedPeople - set of people which are currently infected
      * @return - true if this Person changes its healthState
      */
-    bool checkInfection(std::vector<std::shared_ptr<Person>> &infectedPeople);
+    bool checkInfection(const std::vector<std::shared_ptr<Person>> &infectedPeople);
     /**
      * This iterates over the given set of infected people. Compares their distance
      * with this given Person and increases the map value if a specific person from this

@@ -1,7 +1,6 @@
 #include "Model.hpp"
 #include "Virus.hpp"
 #include <algorithm>
-#include "randomGenerator.hpp"
 
 constexpr float DEFAULT_RECOVERY_PROB = 0.0002;
 constexpr unsigned CRITICAL_TIME_STEPS = 1;
@@ -33,7 +32,7 @@ void Model::movePeople(const std::vector<std::shared_ptr<Person>>& peopleVector)
         person->updatePosition();
 }
 
-//helping methodsfor update state which we only declare here, since they should not be used by other classes
+//helper methods for update state which we only declare here, since they should not be used by other classes
 void updateModelArray(std::vector<std::shared_ptr<Person>> &newlyChangedP, std::vector<int> &positionNewlyChangedP, std::vector<std::shared_ptr<Person>> &people1, std::vector<std::shared_ptr<Person>> &people2){
     unsigned int numberNewlyChangedP = positionNewlyChangedP.size();
     for(unsigned i = 1; i <= numberNewlyChangedP; i++){
@@ -41,7 +40,7 @@ void updateModelArray(std::vector<std::shared_ptr<Person>> &newlyChangedP, std::
         people2.erase(people2.begin()+positionNewlyChangedP[numberNewlyChangedP-i]);
     }
 }
-//helping methodsfor update state which we only declare here, since they should not be used by other classes
+
 void checkModelArrayUpdates(std::vector<std::shared_ptr<Person>> &newlyChangedP, std::vector<int> &positionNewlyChangedP, std::vector<std::shared_ptr<Person>> &people, std::vector<std::shared_ptr<Person>> *infected=0){
     bool state_changed;
     for (long unsigned i = 0; i < people.size(); i++) {
